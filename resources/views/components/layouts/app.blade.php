@@ -70,6 +70,7 @@
     <x-toast />
 
     {{-- Spotlight --}}
-    <x-spotlight />
+    <x-spotlight
+        shortcut=".slash" />
 </body>
 </html>
