@@ -61,8 +61,7 @@
                 <x-menu-item title="Create User" icon="o-users" link="/users/create" />
                 <x-menu-sub title="Materials" icon="o-square-3-stack-3d">
                     <x-menu-item title="list" icon="o-list-bullet" link="/materials/list" />
-                    <x-menu-item title="create" icon="o-plus" link="####" />
-                    <x-menu-item title="edit" icon="o-pencil-square" link="####" />
+                    <x-menu-item title="create" icon="o-plus" link="/materials/create" />
                 </x-menu-sub>
                 <x-menu-sub title="Settings" icon="o-cog-6-tooth">
                     <x-menu-item title="Theme" icon="o-swatch" @click="$dispatch('mary-toggle-theme')" />

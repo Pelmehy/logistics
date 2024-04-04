@@ -18,10 +18,15 @@ Route::get('/logout', function () {
 
 // Protected routes here
 Route::middleware('auth')->group(function () {
+    // Users
     Volt::route('/', 'index');
     Volt::route('/users', 'users.index');
     Volt::route('/users/create', 'users.create');
     Volt::route('/users/{user}/edit', 'users.edit');
+
+    // Materials
     Volt::route('/materials/list', 'materials.list');
+    Volt::route('/materials/create', 'materials.create');
+    Volt::route('/materials/{material}/edit', 'materials.edit');
     // ... more
 });

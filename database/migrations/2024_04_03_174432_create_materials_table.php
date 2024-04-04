@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('description');
-            $table->string('url');
-            $table->integer('quantity');
+            $table->string('description')->nullable();
+            $table->string('url')->nullable();
+            $table->integer('quantity')->default(0);
             $table->timestamps();
         });
     }
