@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(CountrySeeder::class);
         $this->call(LanguageSeeder::class);
+        $this->call(MaterialSeeder::class);
         User::factory(50)->create();
     }
 }

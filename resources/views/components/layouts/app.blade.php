@@ -11,9 +11,15 @@
     {{-- Cropper.js --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
+
+    {{-- Jquery --}}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    {{-- apexcharts --}}
+    <script async="" src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 <body class="min-h-screen font-sans antialiased bg-base-200/50 dark:bg-base-200">
-
+    {{-- Theme toggle --}}
+    <x-theme-toggle class="hidden" />
     {{-- NAVBAR mobile only --}}
     <x-nav sticky class="lg:hidden">
         <x-slot:brand>
@@ -53,9 +59,13 @@
                 <x-menu-item title="Home" icon="o-sparkles" link="/" />
                 <x-menu-item title="Users" icon="o-users" link="/users" />
                 <x-menu-item title="Create User" icon="o-users" link="/users/create" />
+                <x-menu-sub title="Materials" icon="o-square-3-stack-3d">
+                    <x-menu-item title="list" icon="o-list-bullet" link="/materials/list" />
+                    <x-menu-item title="create" icon="o-plus" link="####" />
+                    <x-menu-item title="edit" icon="o-pencil-square" link="####" />
+                </x-menu-sub>
                 <x-menu-sub title="Settings" icon="o-cog-6-tooth">
-                    <x-menu-item title="Wifi" icon="o-wifi" link="####" />
-                    <x-menu-item title="Archives" icon="o-archive-box" link="####" />
+                    <x-menu-item title="Theme" icon="o-swatch" @click="$dispatch('mary-toggle-theme')" />
                 </x-menu-sub>
             </x-menu>
         </x-slot:sidebar>
