@@ -48,6 +48,7 @@ new class extends Component {
 
     public function delete(Material $material): void
     {
+        $material->products()->detach();
         $material->delete();
         $this->warning("$material->name deleted", 'Good bye!', position: 'toast-bottom');
     }

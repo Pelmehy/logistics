@@ -64,8 +64,8 @@
                     <x-menu-item title="create" icon="o-plus" link="/materials/create" />
                 </x-menu-sub>
                 <x-menu-sub title="Products" icon="o-archive-box">
-                    <x-menu-item title="list" icon="o-list-bullet" link="/materials/list" />
-                    <x-menu-item title="create" icon="o-plus" link="/materials/create" />
+                    <x-menu-item title="list" icon="o-list-bullet" link="/products/list" />
+                    <x-menu-item title="create" icon="o-plus" link="/products/create" />
                 </x-menu-sub>
                 <x-menu-sub title="Storage" icon="o-building-storefront">
                     <x-menu-item title="list" icon="o-list-bullet" link="/materials/list" />

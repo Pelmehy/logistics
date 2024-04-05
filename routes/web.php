@@ -28,5 +28,11 @@ Route::middleware('auth')->group(function () {
     Volt::route('/materials/list', 'materials.list');
     Volt::route('/materials/create', 'materials.create');
     Volt::route('/materials/{material}/edit', 'materials.edit');
+
+    //Products
+    Volt::route('/products/list', 'products.list');
+    Volt::route('/products/create', 'products.create');
+    Volt::route('/products/{product}/edit', 'products.edit');
+
     // ... more
 });
