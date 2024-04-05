@@ -68,8 +68,8 @@
                     <x-menu-item title="create" icon="o-plus" link="/products/create" />
                 </x-menu-sub>
                 <x-menu-sub title="Storage" icon="o-building-storefront">
-                    <x-menu-item title="list" icon="o-list-bullet" link="/materials/list" />
-                    <x-menu-item title="create" icon="o-plus" link="/materials/create" />
+                    <x-menu-item title="list" icon="o-list-bullet" link="/storage/list" />
+                    <x-menu-item title="create" icon="o-plus" link="/storage/create" />
                 </x-menu-sub>
                 <x-menu-sub title="Settings" icon="o-cog-6-tooth">
                     <x-menu-item title="Theme" icon="o-swatch" @click="$dispatch('mary-toggle-theme')" />

@@ -20,4 +20,9 @@ class Material extends Model
     {
         return $this->belongsToMany(Product::class);
     }
+
+    public function storages(): BelongsToMany
+    {
+        return $this->belongsToMany(Storage::class)->withPivot('storage_quantity');
+    }
 }

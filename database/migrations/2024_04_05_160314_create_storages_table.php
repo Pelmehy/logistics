@@ -13,7 +13,22 @@ return new class extends Migration
     {
         Schema::create('storages', function (Blueprint $table) {
             $table->id();
+            $table->text('address');
+            $table->float('height');
+            $table->float('square');
             $table->timestamps();
+        });
+
+        Schema::create('material_storage', function (Blueprint $table) {
+            $table->foreignId('storage_id')->constrained('storages');
+            $table->foreignId('material_id')->constrained('materials');
+            $table->integer('storage_quantity')->default(0);
+        });
+
+        Schema::create('product_storage', function (Blueprint $table) {
+            $table->foreignId('storage_id')->constrained('storages');
+            $table->foreignId('product_id')->constrained('products');
+            $table->integer('storage_quantity')->default(0);
         });
     }
 
@@ -22,6 +37,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('material_storage');
+        Schema::dropIfExists('product_storage');
         Schema::dropIfExists('storages');
     }
 };
