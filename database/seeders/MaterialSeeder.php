@@ -36,6 +36,18 @@ class MaterialSeeder extends Seeder
                'url' => fake()->url(),
                'quantity' => rand(0, 1000),
            ],
+           [
+               'name' => 'Скло',
+               'description' => 'empty description',
+               'url' => fake()->url(),
+               'quantity' => rand(0, 1000),
+           ],
+           [
+               'name' => 'Алюміній',
+               'description' => 'empty description',
+               'url' => fake()->url(),
+               'quantity' => rand(0, 1000),
+           ],
 
         ]);
     }
