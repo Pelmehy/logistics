@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 new class extends Component {
     use Toast, WithPagination;
+
+    public bool $drawer = false;
+
     public string $search = '';
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
@@ -90,7 +93,7 @@ new class extends Component {
             @endscope
 
             @scope('cell_url', $material)
-            <x-avatar :image="$material->url ?: '/empty-user.jpg'" class="!w-8 !rounded-lg" />
+            <x-avatar :image="$material->url ?: '/empty-product.png'" class="!w-8 !rounded-lg" />
             @endscope
         </x-table>
     </x-card>

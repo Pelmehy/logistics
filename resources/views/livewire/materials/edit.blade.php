@@ -73,7 +73,7 @@ new class extends Component {
         <div class="">
             <x-form wire:submit="save">
                 <x-file label="Image" wire:model="photo" accept="image/png, image/jpeg" crop-after-change>
-                    <img src="{{ $material->url ?? '/empty-user.jpg' }}" class="h-40 rounded-lg" />
+                    <img src="{{ $material->url ?: '/empty-product.png' }}" class="h-40 rounded-lg" />
                 </x-file>
 
                 <x-input label="Name" wire:model="name" />

@@ -21,11 +21,11 @@ class Product extends Model
 
     public function materials(): BelongsToMany
     {
-        return $this->belongsToMany(Material::class)->withPivot('storage_quantity');
+        return $this->belongsToMany(Material::class);
     }
 
     public function storages(): BelongsToMany
     {
-        return $this->belongsToMany(Storage::class);
+        return $this->belongsToMany(Storage::class)->withPivot('storage_quantity');
     }
 }

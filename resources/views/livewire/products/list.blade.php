@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Builder;
 new class extends Component {
     use Toast, WithPagination;
 
+    public bool $drawer = false;
+
     public string $search = '';
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
@@ -95,7 +97,7 @@ new class extends Component {
             @endscope
 
             @scope('cell_url', $product)
-            <x-avatar :image="$product->url ?: '/empty-user.jpg'" class="!w-8 !rounded-lg"/>
+            <x-avatar :image="$product->url ?: '/empty-product.png'" class="!w-8 !rounded-lg"/>
             @endscope
 
             @scope('cell_materials', $product)
