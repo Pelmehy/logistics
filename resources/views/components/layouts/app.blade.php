@@ -33,7 +33,7 @@
     </x-nav>
 
     {{-- MAIN --}}
-    <x-main full-width>
+    <x-main w-full mx-auto max-w-screen-2xl>
         {{-- SIDEBAR --}}
         <x-slot:sidebar drawer="main-drawer" collapsible class="bg-base-100 lg:bg-inherit">
 
@@ -57,20 +57,32 @@
                 @endif
 
                 <x-menu-item title="Home" icon="o-sparkles" link="/" />
-                <x-menu-item title="Users" icon="o-users" link="/users" />
-                <x-menu-item title="Create User" icon="o-users" link="/users/create" />
+                {{-- USERS --}}
+                <x-menu-sub title="Users" icon="o-users">
+                    <x-menu-item title="list" icon="o-list-bullet" link="/users" />
+                    <x-menu-item title="create" icon="o-plus" link="/users/create" />
+                </x-menu-sub>
+                {{-- MATERIALS --}}
                 <x-menu-sub title="Materials" icon="o-square-3-stack-3d">
                     <x-menu-item title="list" icon="o-list-bullet" link="/materials/list" />
                     <x-menu-item title="create" icon="o-plus" link="/materials/create" />
                 </x-menu-sub>
+                {{-- PRODUCTS --}}
                 <x-menu-sub title="Products" icon="o-archive-box">
                     <x-menu-item title="list" icon="o-list-bullet" link="/products/list" />
                     <x-menu-item title="create" icon="o-plus" link="/products/create" />
                 </x-menu-sub>
+                {{-- STORAGE --}}
                 <x-menu-sub title="Storage" icon="o-building-storefront">
                     <x-menu-item title="list" icon="o-list-bullet" link="/storage/list" />
                     <x-menu-item title="create" icon="o-plus" link="/storage/create" />
                 </x-menu-sub>
+                {{-- ORDERS --}}
+                <x-menu-sub title="Orders" icon="o-shopping-cart">
+                    <x-menu-item title="list" icon="o-list-bullet" link="/orders/list" />
+                    <x-menu-item title="create" icon="o-plus" link="/orders/create" />
+                </x-menu-sub>
+                {{-- SETTINGS --}}
                 <x-menu-sub title="Settings" icon="o-cog-6-tooth">
                     <x-menu-item title="Theme" icon="o-swatch" @click="$dispatch('mary-toggle-theme')" />
                 </x-menu-sub>

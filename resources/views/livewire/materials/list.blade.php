@@ -42,10 +42,6 @@ new class extends Component {
             $count += 1;
         }
 
-//        if ($this->country_id) {
-//            $count += 1;
-//        }
-
         return $count;
     }
 
@@ -75,7 +71,7 @@ new class extends Component {
 
 <div>
     <!-- HEADER -->
-    <x-header title="Hello" separator progress-indicator>
+    <x-header title="Materials" separator progress-indicator>
         <x-slot:middle class="!justify-end">
             <x-input placeholder="Search..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass" />
         </x-slot:middle>
