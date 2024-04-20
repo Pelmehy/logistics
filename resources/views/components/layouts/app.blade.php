@@ -58,9 +58,14 @@
 
                 <x-menu-item title="Home" icon="o-sparkles" link="/" />
                 {{-- USERS --}}
-                <x-menu-sub title="Users" icon="o-users">
+                <x-menu-sub title="Users" icon="o-briefcase">
                     <x-menu-item title="list" icon="o-list-bullet" link="/users" />
                     <x-menu-item title="create" icon="o-plus" link="/users/create" />
+                </x-menu-sub>
+                {{-- Clients --}}
+                <x-menu-sub title="Clients" icon="o-users">
+                    <x-menu-item title="list" icon="o-list-bullet" link="/clients" />
+                    <x-menu-item title="create" icon="o-plus" link="/clients/create" />
                 </x-menu-sub>
                 {{-- MATERIALS --}}
                 <x-menu-sub title="Materials" icon="o-square-3-stack-3d">

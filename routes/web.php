@@ -24,6 +24,11 @@ Route::middleware('auth')->group(function () {
     Volt::route('/users/create', 'users.create');
     Volt::route('/users/{user}/edit', 'users.edit');
 
+    // Clients
+    Volt::route('/clients', 'clients.list');
+    Volt::route('/clients/create', 'clients.create');
+    Volt::route('/clients/{client}/edit', 'clients.edit');
+
     // Materials
     Volt::route('/materials/list', 'materials.list');
     Volt::route('/materials/create', 'materials.create');

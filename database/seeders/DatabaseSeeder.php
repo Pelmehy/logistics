@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Client;
 use App\Models\Manufacture;
 use App\Models\Material;
 use App\Models\User;
@@ -24,6 +25,8 @@ class DatabaseSeeder extends Seeder
 
         Manufacture::factory(5)->create();
         $this->syncRndItems(Manufacture::class, Material::class);
+
+        Client::factory(10)->create();
     }
 
     private function syncRndItems($owner, $element): void
@@ -45,8 +48,3 @@ class DatabaseSeeder extends Seeder
         }
     }
 }
-
-sudo echo "LC_ALL=en_US.UTF-8" >> /etc/environment
-sudo echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
-sudo echo "LANG=en_US.UTF-8" > /etc/locale.conf
-locale-gen en_US.UTF-8
