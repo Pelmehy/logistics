@@ -72,6 +72,11 @@
                     <x-menu-item title="list" icon="o-list-bullet" link="/products/list" />
                     <x-menu-item title="create" icon="o-plus" link="/products/create" />
                 </x-menu-sub>
+                {{-- MANUFACTURE --}}
+                <x-menu-sub title="Manufactures" icon="o-home-modern">
+                    <x-menu-item title="list" icon="o-list-bullet" link="/manufacture/list" />
+                    <x-menu-item title="create" icon="o-plus" link="/manufacture/create" />
+                </x-menu-sub>
                 {{-- STORAGE --}}
                 <x-menu-sub title="Storage" icon="o-building-storefront">
                     <x-menu-item title="list" icon="o-list-bullet" link="/storage/list" />
