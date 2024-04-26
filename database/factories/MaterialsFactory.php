@@ -26,7 +26,7 @@ class MaterialsFactory extends Factory
         return [
             'name' => fake()->firstName(),
             'description' => 'empty description',
-            'url' => fake()->url(),
+            'url' => null,
             'quantity' => rand(0, 1000),
         ];
     }

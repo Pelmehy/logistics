@@ -41,12 +41,6 @@ new class extends Component {
         ];
     }
 
-    public function storageItems(Storage $storage)
-    {
-        $items = $storage->products()->select('id, name, url')->where('id', '>', 0);
-        return $storage->materials()->select('id, name, url')->union($items);
-    }
-
     // Clear filters
     public function clear(): void
     {
@@ -75,7 +69,7 @@ new class extends Component {
     public function storage(): LengthAwarePaginator
     {
         return Storage::query()
-            ->when($this->search, fn(Builder $q) => $q->where('address', 'like', "%$this->search%"))
+            ->when($this->search, fn( $q) => $q->where('address', 'like', "%$this->search%"))
             ->paginate(10);
     }
 

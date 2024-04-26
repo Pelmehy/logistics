@@ -6,8 +6,6 @@ use Mary\Traits\Toast;
 use Livewire\Attributes\Rule;
 
 use App\Models\User;
-use App\Models\Country;
-use App\Models\Language;
 
 new class extends Component {
     use Toast, WithFileUploads;
@@ -19,10 +17,6 @@ new class extends Component {
     #[Rule('required|email')]
     public string $email = '';
 
-    // Optional
-    #[Rule('sometimes')]
-    public ?int $country_id = null;
-
     #[Rule('required')]
     public array $my_languages = [];
 
@@ -33,8 +27,6 @@ new class extends Component {
     public function with(): array
     {
         return [
-            'countries' => Country::all(),
-            'languages' => Language::all(),
         ];
     }
 
@@ -52,11 +44,8 @@ new class extends Component {
         $user = new User();
         $user->name = $data['name'];
         $user->email = $data['email'];
-        $user->country_id = $data['country_id'];
         $user->password = 'pls add me later';
         $user->save();
-
-        $user->languages()->sync($this->my_languages);
 
         if ($this->photo) {
             $url = $this->photo->store('users', 'public');
@@ -90,12 +79,6 @@ new class extends Component {
 
                 <x-input label="Name" wire:model="name" />
                 <x-input label="Email" wire:model="email" />
-                <x-select label="Country" wire:model="country_id" :options="$countries" placeholder="---" />
-                <x-choices-offline
-                    label="My languages"
-                    wire:model="my_languages"
-                    :options="$languages"
-                    searchable />
 
                 <x-slot:actions>
                     <x-button label="Cancel" link="/users" />

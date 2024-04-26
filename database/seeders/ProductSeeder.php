@@ -23,26 +23,30 @@ class ProductSeeder extends Seeder
             [
                 'name' => 'Тетра',
                 'description' => 'empty description',
-                'url' => fake()->url(),
+                'url' => null,
                 'quantity' => rand(0, 1000),
+                'price' => 300,
             ],
             [
                 'name' => 'Пластикова бутилка',
                 'description' => 'empty description',
-                'url' => fake()->url(),
+                'url' => null,
                 'quantity' => rand(0, 1000),
+                'price' => 200,
             ],
             [
                 'name' => 'Скляна бутилка',
                 'description' => 'empty description',
-                'url' => fake()->url(),
+                'url' => null,
                 'quantity' => rand(0, 1000),
+                'price' => 100,
             ],
             [
                 'name' => 'Алюмінієва банка',
                 'description' => 'empty description',
-                'url' => fake()->url(),
+                'url' => null,
                 'quantity' => rand(0, 1000),
+                'price' => 30.3,
             ],
         ]);
 

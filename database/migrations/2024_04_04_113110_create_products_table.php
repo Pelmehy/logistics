@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('url')->nullable();
             $table->integer('quantity');
+            $table->float('price')->default(0);
             $table->timestamps();
         });
 

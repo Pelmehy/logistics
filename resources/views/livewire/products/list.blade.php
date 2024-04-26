@@ -44,10 +44,6 @@ new class extends Component {
             $count += 1;
         }
 
-//        if ($this->country_id) {
-//            $count += 1;
-//        }
-
         return $count;
     }
 

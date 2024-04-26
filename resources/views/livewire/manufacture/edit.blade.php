@@ -47,7 +47,7 @@ new class extends Component {
         foreach ($materials as $material) {
             $this->manufactureMaterials[] = $material->id;
 
-            $this->materialsPrice[$material->id] = $material->pivot->cost;
+            $this->materialsPrice[$material->id] = $material->pivot->price;
         }
 
         $this->fill(['materialsPrice' => $this->materialsPrice]);
@@ -69,12 +69,12 @@ new class extends Component {
         ];
 
         $relatedMaterials = [];
-        foreach ($this->materialsPrice as $materialId => $materialCost) {
-            $materialCost = (int) $materialCost ?: null;
+        foreach ($this->materialsPrice as $materialId => $materialprice) {
+            $materialprice = (int) $materialprice ?: null;
 
             $relatedMaterials[] = [
                 'material_id' => $materialId,
-                'cost' => $materialCost
+                'price' => $materialprice
             ];
         }
 

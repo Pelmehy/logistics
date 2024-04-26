@@ -30,16 +30,6 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function country(): BelongsTo
-    {
-        return $this->belongsTo(Country::class);
-    }
-
-    public function languages(): BelongsToMany
-    {
-        return $this->belongsToMany(Language::class);
-    }
-
     /**
      * Get the attributes that should be cast.
      *

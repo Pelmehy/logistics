@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Order;
+
 use Livewire\Volt\Component;
 use Mary\Traits\Toast;
 use Livewire\WithPagination;
@@ -13,8 +15,10 @@ new class extends Component {
 //    public bool $drawer = true;
 
     public string $search = '';
-    public string $status_type = '';
-    public string $warning_type = '';
+    public string $statusType = '';
+    public string $warningType = '';
+    public bool $receiverSearch = false;
+    public int|null $receiverID = null;
 
     public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
@@ -22,13 +26,21 @@ new class extends Component {
     {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
-            ['key' => 'insert_date', 'label' => 'Insert Date', 'class' => 'w-1'],
+            ['key' => 'created_at', 'label' => 'Insert Date', 'class' => 'w-1'],
             ['key' => 'due_date', 'label' => 'Due Date', 'class' => 'w-1'],
-            ['key' => 'receiver', 'label' => 'Receiver', 'class' => 'w-1'],
+            ['key' => 'client_id', 'label' => 'Receiver', 'class' => 'w-1'],
             ['key' => 'total', 'label' => 'Total', 'class' => 'w-1'],
             ['key' => 'status', 'label' => 'Status', 'class' => 'w-1'],
             ['key' => 'warnings', 'label' => 'Warnings', 'class' => 'w-1'],
         ];
+    }
+
+    public function orders(): LengthAwarePaginator
+    {
+        return Order::query()
+            ->when($this->receiverSearch, fn(Builder $q) => $q->where('client_id', $this->receiverID))
+            ->when($this->statusType, fn(Builder $q) => $q->where('status', $this->statusType))
+            ->paginate(10);
     }
 
     public function testData()
@@ -71,11 +83,11 @@ new class extends Component {
             $count += 1;
         }
 
-        if ($this->status_type) {
+        if ($this->statusType) {
             $count += 1;
         }
 
-        if ($this->warning_type) {
+        if ($this->warningType) {
             $count += 1;
         }
 
@@ -86,7 +98,7 @@ new class extends Component {
     {
         return [
             'headers' => $this->headers(),
-            'orders' => $this->testData(),
+            'orders' => $this->orders(),
             'filterCount' => $this->filterCount(),
         ];
     }
@@ -110,9 +122,17 @@ new class extends Component {
             :headers="$headers"
             :rows="$orders"
             :sort-by="$sortBy"
-            {{--            with-pagination --}}
-            link="/materials/{id}/edit"
+            with-pagination
+            link="/orders/{id}/view"
         >
+            @scope('cell_client_id', $order)
+            @if(is_null($order->client_id))
+                Me
+            @else
+            {{$order->client->name}}
+            @endif
+            @endscope
+
             @scope('cell_status', $order)
             <x-badge :value="$order->status" class="badge-primary"/>
             @endscope
@@ -134,12 +154,14 @@ new class extends Component {
         <x-select
             placeholder="Status"
             class="mt-4"
-            wire:model.live.debounce="status_type"
+            wire:model.live.debounce="statusType"
             :options="[
-                ['id' => 1, 'status' => 'Pending'],
-                ['id' => 2, 'status' => 'Confirmed'],
-                ['id' => 3, 'status' => 'Delivered'],
-                ['id' => 4, 'status' => 'Declined'],
+                ['id' => '', 'status' => 'None'],
+                ['id' => 'placed', 'status' => 'placed'],
+                ['id' => 'paid', 'status' => 'Paid'],
+                ['id' => 'produced', 'status' => 'Produced'],
+                ['id' => 'shipped', 'status' => 'Shipped'],
+                ['id' => 'delivered', 'status' => 'Delivered'],
             ]"
             {{--            option-value="status"--}}
             option-label="status"
@@ -149,7 +171,7 @@ new class extends Component {
         <x-select
             placeholder="Warnings"
             class="mt-4"
-            wire:model.live.debounce="warning_type"
+            wire:model.live.debounce="warningType"
             :options="[
                 ['id' => 1, 'warning' => 'Overdue'],
                 ['id' => 2, 'warning' => 'canceled'],

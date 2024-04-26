@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Client;
-use App\Models\Country;
 
 use Illuminate\Support\Collection;
 use Livewire\Volt\Component;
@@ -44,7 +43,7 @@ new class extends Component {
             ['key' => 'name', 'label' => 'Name', 'class' => 'w-32'],
             ['key' => 'email', 'label' => 'E-mail'],
             ['key' => 'phone', 'label' => 'Phone'],
-            ['key' => 'address', 'label' => 'Country', 'class' => 'hidden lg:table-cell'],
+            ['key' => 'address', 'label' => 'Address', 'class' => 'hidden lg:table-cell'],
         ];
     }
 
@@ -75,7 +74,6 @@ new class extends Component {
         return [
             'clients' => $this->clients(),
             'headers' => $this->headers(),
-            'countries' => Country::all(),
             'filterCount' => $this->filterCount(),
         ];
     }
@@ -123,7 +121,6 @@ new class extends Component {
     <!-- FILTER DRAWER -->
     <x-drawer wire:model="drawer" title="Filters" right separator with-close-button class="lg:w-1/3">
         <x-input placeholder="Search..." wire:model.live.debounce="search" icon="o-magnifying-glass" @keydown.enter="$wire.drawer = false" />
-        <x-select placeholder="Country" class="mt-2" wire:model.live="email" :options="$countries" icon="o-flag" placeholder-value="0" />
 
         <x-slot:actions>
             <x-button label="Reset" icon="o-x-mark" wire:click="clear" spinner />

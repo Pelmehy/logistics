@@ -16,6 +16,6 @@ class Manufacture extends Model
 
     public function materials(): BelongsToMany
     {
-        return $this->belongsToMany(Material::class)->withPivot('cost');
+        return $this->belongsToMany(Material::class)->withPivot('price');
     }
 }

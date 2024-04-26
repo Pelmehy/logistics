@@ -6,7 +6,6 @@ use Mary\Traits\Toast;
 use Livewire\Attributes\Rule;
 
 use App\Models\User;
-use App\Models\Country;
 use App\Models\Language;
 
 new class extends Component {
@@ -22,12 +21,6 @@ new class extends Component {
     public string $email = '';
 
     // Optional
-    #[Rule('sometimes')]
-    public ?int $country_id = null;
-
-    #[Rule('required')]
-    public array $my_languages = [];
-
     #[Rule('nullable|image|max:1024')]
     public $photo;
 
@@ -35,8 +28,6 @@ new class extends Component {
     public function with(): array
     {
         return [
-            'countries' => Country::all(),
-            'languages' => Language::all(),
         ];
     }
 
@@ -78,12 +69,6 @@ new class extends Component {
 
                 <x-input label="Name" wire:model="name" />
                 <x-input label="Email" wire:model="email" />
-                <x-select label="Country" wire:model="country_id" :options="$countries" placeholder="---" />
-                <x-choices-offline
-                    label="My languages"
-                    wire:model="my_languages"
-                    :options="$languages"
-                    searchable />
 
                 <x-slot:actions>
                     <x-button label="Cancel" link="/users" />

@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     //Orders
     Volt::route('/orders/list', 'orders.list');
     Volt::route('/orders/create', 'orders.create');
-    Volt::route('/orders/{product}/edit', 'orders.edit');
+    Volt::route('/orders/{order}/edit', 'orders.edit');
+    Volt::route('/orders/{order}/view', 'orders.view');
     // ... more
 });

@@ -50,12 +50,12 @@ new class extends Component {
         ];
 
         $relatedMaterials = [];
-        foreach ($this->materialsPrice as $materialId => $materialCost) {
-            $materialCost = (int) $materialCost ?: null;
+        foreach ($this->materialsPrice as $materialId => $materialprice) {
+            $materialprice = (int) $materialprice ?: null;
 
             $relatedMaterials[] = [
                 'material_id' => $materialId,
-                'cost' => $materialCost
+                'price' => $materialprice
             ];
         }
 

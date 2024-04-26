@@ -22,7 +22,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('manufacture_id')->constrained('manufactures');
             $table->foreignId('material_id')->constrained('materials');
-            $table->float('cost')->default(0);
+            $table->float('price')->default(0);
         });
     }
 

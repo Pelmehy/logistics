@@ -6,6 +6,8 @@ namespace Database\Seeders;
 use App\Models\Client;
 use App\Models\Manufacture;
 use App\Models\Material;
+use App\Models\Order;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -16,8 +18,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(CountrySeeder::class);
-        $this->call(LanguageSeeder::class);
         $this->call(MaterialSeeder::class);
         $this->call(ProductSeeder::class);
         $this->call(StorageSeeder::class);
@@ -27,6 +27,12 @@ class DatabaseSeeder extends Seeder
         $this->syncRndItems(Manufacture::class, Material::class);
 
         Client::factory(10)->create();
+
+        Order::factory(20)->create();
+
+        foreach (Order::cursor() as $order) {
+            $this->orderItems($order);
+        }
     }
 
     private function syncRndItems($owner, $element): void
@@ -46,5 +52,61 @@ class DatabaseSeeder extends Seeder
             $elements = $elementModel->inRandomOrder()->limit(rand(1, 3))->pluck('id')->toArray();
             $dbOwner->$elementTableName()->sync($elements);
         }
+    }
+
+    private function orderItems(Order $order)
+    {
+        $randSelect = rand(1,10);
+        $quantity = rand(1, 5);
+        $orderItems = [];
+        $total = 0;
+
+        if ($randSelect === 1) {
+            $clientId = null;
+            $manufacture = Manufacture::inRandomOrder()->first();
+            $manufactureId = $manufacture->id;
+
+            //order materials
+            $syncType = 'materials';
+            $items = $manufacture->materials()->inRandomOrder()->limit(rand(2, 4))->get();
+
+            foreach ($items as $item) {
+                $orderTotal = $quantity * $item->pivot->price;
+                $orderItems[] = [
+                    'material_id' => $item->id,
+                    'count' => $quantity,
+                    'price' => $item->pivot->price,
+                    'total' => $orderTotal
+                ];
+
+                $total += $orderTotal;
+            }
+        } else {
+            $clientId = Client::inRandomOrder()->first()->id;
+            $manufactureId = null;
+
+            $syncType = 'products';
+            $items = Product::inRandomOrder()->limit(rand(2, 4))->get();
+
+            foreach ($items as $item) {
+                $orderTotal = $quantity * $item->price;
+                $orderItems[] = [
+                    'product_id' => $item->id,
+                    'count' => $quantity,
+                    'price' => $item->price,
+                    'total' => $orderTotal,
+                ];
+
+                $total += $orderTotal;
+            }
+        }
+
+        $order->manufacture_id = $manufactureId;
+        $order->client_id = $clientId;
+        $order->total = $total;
+
+        $order->save();
+
+        $order->$syncType()->sync($orderItems);
     }
 }
