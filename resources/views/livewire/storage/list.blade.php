@@ -141,17 +141,14 @@ new class extends Component {
             @scope('cell_capacity', $storage)
                 @php
                     $capacity = $storage->height * $storage->square;
-                    $loadMaterials = $storage->materials()->sum('storage_quantity');
-                    $loadProducts = $storage->products()->sum('storage_quantity');
-
-                    $load = $loadMaterials + $loadProducts;
+                    $load = $storage->items->sum('storage_quantity');
                 @endphp
                 <div class="grid grid-flow-col auto-cols-auto">
                     <div class="mr-2 min-w-8">
-                        <x-progress value="{{$loadProducts}}" max="{{$capacity}}" class="progress-warning h-3" />
+                        <x-progress value="{{$load}}" max="{{$capacity}}" class="progress-warning h-3" />
                     </div>
                     <div class="min-w-8">
-                        {{$loadProducts}} / {{$capacity}}
+                        {{$load}} / {{$capacity}}
                     </div>
                 </div>
             @endscope
@@ -168,7 +165,7 @@ new class extends Component {
             @scope('expansion', $storage, $headersItems)
                 <x-table
                 :headers="$headersItems"
-                :rows="$storage->items()->get()"
+                :rows="$storage->items"
                 >
                     @scope('cell_url', $item)
                         <x-avatar :image="$item->url ?: '/empty-product.png'" class="!w-8 !rounded-lg"/>

@@ -2,16 +2,29 @@
 
 use App\Models\Order;
 use App\Enums\Statuses;
+use App\Models\Material;
+use App\Models\Product;
 
 use Livewire\Volt\Component;
 use Mary\Traits\Toast;
 use Livewire\WithPagination;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
+use Livewire\Attributes\Rule;
 
 new class extends Component {
     use Toast, WithPagination;
 
     public Order $order;
+    public $orderItems;
     public string $status;
+    public bool $showDrawer = false;
+
+    #[Rule('required|numeric')]
+    public int $itemId;
+
+    #[Rule('required|numeric')]
+    public int $quantity;
 
     public function headers(): array
     {
@@ -25,20 +38,117 @@ new class extends Component {
         ];
     }
 
+    public function updateQuantity($itemId, int $count): void
+    {
+        $item = $this->order->getOrderItems()->where('id', $itemId)->first()->orderItems;
+        $item->count = $count;
+        $item->total = $count * $item->price;
+
+        $item->save();
+
+        $this->order->updateOrderTotal();
+    }
+
+    public function delete($itemId): void
+    {
+        $item = $this->order->getOrderItems()->where('id', $itemId)->first()->orderItems;
+        $item->delete();
+        $this->order->updateOrderTotal();
+
+        $this->js('window.location.reload()');
+    }
+
+    public function save(): void
+    {
+        //syncWithoutDetaching
+        $this->validate();
+
+        if ($this->order->client_id) {
+            $dataType = 'product';
+            $item = Product::where('id', $this->itemId)->first();
+            $price = $item->price;
+        } else {
+            $dataType = 'material';
+            $item = Material::where('id', $this->itemId)->first();
+            $price = $this->order
+                ->manufacture
+                ->materials()->where('id', $this->itemId)->first()
+                ->pivot->price;
+        }
+
+        $data = [
+            $dataType . '_id' => $this->itemId,
+            'count' => $this->quantity,
+            'price' => $price,
+            'total' => $price * $this->quantity,
+        ];
+
+        $dataType .= 's';
+        $this->order->$dataType()->syncWithoutDetaching([$data]);
+        $this->showDrawer = false;
+    }
+
+    public function updated($property): void
+    {
+        if (!is_array($property) && $property != "") {
+            $this->resetPage();
+        }
+    }
+
+    public function changeStatus(bool $isNext = true): void
+    {
+        $statuses = Statuses::cases();
+        $statusesCount = count($statuses);
+
+        $i = 0;
+        while ($i < $statusesCount) {
+            if ($this->order->status === $statuses[$i]->name) {
+                // validate status change action
+                if ($isNext && $i === $statusesCount - 1) {
+                    return;
+                } elseif (!$isNext && $i === 0) {
+                    return;
+                }
+
+                // update order status
+                $this->order->status = $isNext
+                    ? $statuses[$i + 1]->name
+                    : $statuses[$i - 1]->name;
+
+                $this->order->save();
+
+                return;
+            }
+
+            $i++;
+        }
+    }
+
+    public function getAvailableItems(): Collection
+    {
+        return $this->order->client_id
+            ? Product::whereNotIn('id', $this->order->products()->pluck('id'))->get()
+            : $this->order->manufacture
+                ->materials()
+                ->whereNotIn('id', $this->order->materials()
+                    ->pluck('id'))->get();
+    }
+
     public function with(): array
     {
         if ($this->order->client_id) {
-            $orderItems = $this->order->products;
+            $this->orderItems = $this->order->products;
             $link = '/products/';
         } else {
-            $orderItems = $this->order->materials;
+            $this->orderItems = $this->order->materials;
             $link = '/materials/';
         }
 
         return [
             'order' => $this->order,
-            'orderItems' => $orderItems,
+            'orderItems' => $this->orderItems,
             'headers' => $this->headers(),
+            'itemsList' => $this->getAvailableItems()
         ];
     }
 }; ?>
@@ -104,11 +214,13 @@ new class extends Component {
                     @foreach(Statuses::cases() as $status)
                         <li class="relative mb-6 sm:mb-0 px-2">
                             <div class="flex items-center">
-                                <div class="z-10 flex items-center justify-center w-7 h-7 {{$pending ? 'bg-base-300' : 'bg-primary'}} rounded-full ring-0 ring-white dark:bg-blue-900 sm:ring-8 dark:ring-gray-900 shrink-0">
-                                    <x-icon name="{{$status->value}}" class="{{$pending ? '' : 'text-base-100'}}" />
+                                <div
+                                    class="z-10 flex items-center justify-center w-7 h-7 {{$pending ? 'bg-base-300' : 'bg-primary'}} rounded-full ring-0 ring-white dark:bg-blue-900 sm:ring-8 dark:ring-gray-900 shrink-0">
+                                    <x-icon name="{{$status->value}}" class="{{$pending ? '' : 'text-base-100'}}"/>
                                 </div>
                                 @if(!$loop->last)
-                                    <div class="hidden sm:flex w-full {{$pending ? 'bg-gray-200' : 'bg-primary'}} h-0.5 dark:bg-gray-700"></div>
+                                    <div
+                                        class="hidden sm:flex w-full {{$pending ? 'bg-gray-200' : 'bg-primary'}} h-0.5 dark:bg-gray-700"></div>
                                 @endif
                             </div>
                             <div class="mt-3 sm:pe-8 min-w-24">
@@ -125,14 +237,19 @@ new class extends Component {
             </div>
 
             <x-slot:actions>
-                <x-button label="Change status" class=""/>
+                @if($order->status !== Statuses::placed->name)
+                    <x-button label="Prev status" wire:click="changeStatus(false)" class=""/>
+                @endif
+                @if($order->status !== Statuses::delivered->name)
+                    <x-button label="Next status" wire:click="changeStatus()" class=""/>
+                @endif
             </x-slot:actions>
         </x-card>
     </div>
 
     <x-card title="Items" class="mt-5" shadow separator>
         <x-slot:menu>
-            <x-button label="Add" icon="o-plus"/>
+            <x-button label="Add" icon="o-plus" wire:click="$toggle('showDrawer')"/>
         </x-slot:menu>
 
         <x-table
@@ -140,11 +257,13 @@ new class extends Component {
             :rows="$orderItems"
         >
             @scope('cell_url', $orderItem)
-                <x-avatar :image="$orderItem->url ?: '/empty-product.png'" class="!w-14 !rounded-lg"/>
+            <x-avatar :image="$orderItem->url ?: '/empty-product.png'" class="!w-14 !rounded-lg"/>
             @endscope
 
             @scope('cell_count', $orderItem)
-                <x-input class="!max-w-16" type="number" wire:model="" value="{{$orderItem->orderItems->count}}" placeholder="item count" />
+            <x-input class="!max-w-24" type="number"
+                     wire:change="updateQuantity({{$orderItem->id}}, $event.target.value)"
+                     value="{{$orderItem->orderItems->count}}" placeholder="item count"/>
             @endscope
 
             @scope('cell_price', $orderItem)
@@ -152,8 +271,49 @@ new class extends Component {
             @endscope
 
             @scope('cell_total', $orderItem)
-                {{ $orderItem->orderItems->total }} $
+            {{ $orderItem->orderItems->total }} $
+            @endscope
+
+            @scope('actions', $orderItem)
+            <x-button icon="o-trash" wire:click="delete({{ $orderItem->id }})" wire:confirm="Are you sure?" spinner
+                      class="btn-ghost btn-sm text-red-500"/>
             @endscope
         </x-table>
     </x-card>
+
+    <x-drawer wire:model="showDrawer" title="Add item" right separator with-close-button class="lg:w-1/3">
+        <x-form wire:submit="save" class="grid grid-flow-row auto-rows-min gap-3">
+            <x-choices-offline
+                label="{{ $order->client_id ? 'Products' : 'Materials' }}"
+                wire:model="itemId"
+                :options="$itemsList"
+                icon="o-magnifying-glass"
+                height="max-h-96"
+                hint="Search for product name"
+                single
+                searchable
+            >
+                @scope('item', $item)
+                    <x-list-item :item="$item" no-hover>
+                        <x-slot:avatar>
+                            <x-avatar :image="$item->url ?: '/empty-product.png'" class="!w-14 !rounded-lg" />
+                        </x-slot:avatar>
+                        <x-slot:value>
+                            {{ $item->name }}
+                        </x-slot:value>
+                        <x-slot:actions>
+                            <x-badge :value="$item->price . '$'" />
+                        </x-slot:actions>
+                    </x-list-item>
+                @endscope
+            </x-choices-offline>
+
+            <x-input label="Quantity" placeholder="0" wire:model="quantity" />
+
+            <x-slot:actions>
+                <x-button label="Cancel" class="btn-outline btn-error" />
+                <x-button label="Add" class="btn-outline btn-success" type="submit" spinner="save" />
+            </x-slot:actions>
+        </x-form>
+    </x-drawer>
 </div>
