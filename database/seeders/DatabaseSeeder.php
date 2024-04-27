@@ -48,9 +48,19 @@ class DatabaseSeeder extends Seeder
         $dbOwners = $ownerModel->all();
 
         // generate random relationships
+        $path = explode('\\', $element);
+        $elementTiedName = strtolower($path[count($path) - 1]);
         foreach ($dbOwners as $dbOwner) {
             $elements = $elementModel->inRandomOrder()->limit(rand(1, 3))->pluck('id')->toArray();
-            $dbOwner->$elementTableName()->sync($elements);
+            $data = [];
+            foreach ($elements as $el) {
+                $data[] = [
+                    $elementTiedName . '_id' => $el,
+                    'price' => fake()->randomFloat(max: 10000),
+                ];
+            }
+
+            $dbOwner->$elementTableName()->sync($data);
         }
     }
 

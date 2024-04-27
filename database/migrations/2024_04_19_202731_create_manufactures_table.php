@@ -19,7 +19,6 @@ return new class extends Migration
         });
 
         Schema::create('manufacture_material', function (Blueprint $table){
-            $table->id();
             $table->foreignId('manufacture_id')->constrained('manufactures');
             $table->foreignId('material_id')->constrained('materials');
             $table->float('price')->default(0);

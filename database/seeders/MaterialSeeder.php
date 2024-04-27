@@ -21,31 +21,31 @@ class MaterialSeeder extends Seeder
            [
                'name' => 'Картон',
                'description' => 'empty description',
-               'url' => fake()->url(),
+               'url' =>null,
                'quantity' => rand(0, 1000),
            ],
            [
                'name' => 'Поліетилен',
                'description' => 'empty description',
-               'url' => fake()->url(),
+               'url' =>null,
                'quantity' => rand(0, 1000),
            ],
            [
                'name' => 'Алюмінієва фольга',
                'description' => 'empty description',
-               'url' => fake()->url(),
+               'url' =>null,
                'quantity' => rand(0, 1000),
            ],
            [
                'name' => 'Скло',
                'description' => 'empty description',
-               'url' => fake()->url(),
+               'url' =>null,
                'quantity' => rand(0, 1000),
            ],
            [
                'name' => 'Алюміній',
                'description' => 'empty description',
-               'url' => fake()->url(),
+               'url' =>null,
                'quantity' => rand(0, 1000),
            ],
 

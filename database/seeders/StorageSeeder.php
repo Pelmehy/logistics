@@ -41,8 +41,29 @@ class StorageSeeder extends Seeder
 
         $storages = Storage::all();
         foreach ($storages as $storage) {
-            $materials = Material::inRandomOrder()->limit(rand(1, 3))->pluck('id')->toArray();
-            $products = Product::inRandomOrder()->limit(rand(1, 3))->pluck('id')->toArray();
+            $capacity = $storage->square * $storage->height;
+
+            $dataList = Material::inRandomOrder()->limit(rand(1, 3))->pluck('id')->toArray();
+            $materials = [];
+            foreach ($dataList as $data) {
+                $storageQuantity = rand(1, $capacity);
+                $capacity -= $storageQuantity;
+                $materials[] = [
+                    'material_id' => $data,
+                    'storage_quantity' => $storageQuantity
+                ];
+            }
+
+            $dataList = Product::inRandomOrder()->limit(rand(1, 3))->pluck('id')->toArray();
+            $products = [];
+            foreach ($dataList as $data) {
+                $storageQuantity = rand(1, $capacity);
+                $capacity -= $storageQuantity;
+                $products[] = [
+                    'product_id' => $data,
+                    'storage_quantity' => $storageQuantity
+                ];
+            }
 
             $storage->materials()->sync($materials);
             $storage->products()->sync($products);
