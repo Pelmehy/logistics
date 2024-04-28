@@ -43,6 +43,9 @@ class StorageSeeder extends Seeder
         foreach ($storages as $storage) {
             $capacity = $storage->square * $storage->height;
 
+            $storage->capacity = $capacity;
+            $storage->save();
+
             $dataList = Material::inRandomOrder()->limit(rand(1, 3))->pluck('id')->toArray();
             $materials = [];
             foreach ($dataList as $data) {
@@ -64,6 +67,9 @@ class StorageSeeder extends Seeder
                     'storage_quantity' => $storageQuantity
                 ];
             }
+
+            $storage->load = $storage->capacity - $capacity;
+            $storage->save();
 
             $storage->materials()->sync($materials);
             $storage->products()->sync($products);

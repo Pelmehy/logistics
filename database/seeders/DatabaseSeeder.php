@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         Manufacture::factory(5)->create();
         $this->syncRndItems(Manufacture::class, Material::class);
 
+        $this->call(ClientsSeeder::class);
         Client::factory(10)->create();
 
         Order::factory(20)->create();
@@ -56,7 +57,7 @@ class DatabaseSeeder extends Seeder
             foreach ($elements as $el) {
                 $data[] = [
                     $elementTiedName . '_id' => $el,
-                    'price' => fake()->randomFloat(max: 10000),
+                    'price' => round(fake()->randomFloat(max: 10000), 2),
                 ];
             }
 

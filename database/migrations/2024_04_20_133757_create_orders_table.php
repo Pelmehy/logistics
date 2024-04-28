@@ -27,6 +27,7 @@ return new class extends Migration
                 ]
             )->default('placed');
             $table->float('total');
+            $table->float('is_finalized');
             $table->timestamps();
         });
 
@@ -36,6 +37,7 @@ return new class extends Migration
             $table->integer('count');
             $table->float('price');
             $table->float('total');
+            $table->foreignId('storage_id')->nullable()->constrained('storages');
         });
 
         Schema::create('order_product', function (Blueprint $table) {
@@ -44,6 +46,7 @@ return new class extends Migration
             $table->integer('count');
             $table->float('price');
             $table->float('total');
+            $table->foreignId('storage_id')->nullable()->constrained('storages');
         });
     }
 

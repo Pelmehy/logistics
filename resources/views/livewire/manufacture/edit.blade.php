@@ -7,6 +7,7 @@ use Livewire\Volt\Component;
 use Livewire\WithFileUploads;
 use Mary\Traits\Toast;
 use Livewire\Attributes\Rule;
+use Livewire\Attributes\Validate
 use Illuminate\Support\Facades\Storage;
 
 new class extends Component {
@@ -25,7 +26,6 @@ new class extends Component {
     public array $manufactureMaterials = [];
 
     #[Validate([
-//        'materialsPrice' => 'required',
         'materialsPrice.*' => 'required',
     ])]
     public array $materialsPrice = [];

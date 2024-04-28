@@ -126,11 +126,7 @@ new class extends Component {
             link="/orders/{id}/view"
         >
             @scope('cell_client_id', $order)
-            @if(is_null($order->client_id))
-                Me
-            @else
             {{$order->client->name}}
-            @endif
             @endscope
 
             @scope('cell_status', $order)

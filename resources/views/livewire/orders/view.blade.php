@@ -40,6 +40,8 @@ new class extends Component {
 
     public function updateQuantity($itemId, int $count): void
     {
+        $this->js("console.log($count);");
+
         $item = $this->order->getOrderItems()->where('id', $itemId)->first()->orderItems;
         $item->count = $count;
         $item->total = $count * $item->price;
@@ -63,13 +65,12 @@ new class extends Component {
         //syncWithoutDetaching
         $this->validate();
 
-        if ($this->order->client_id) {
+        if ($this->order->client_id !== 1) {
             $dataType = 'product';
             $item = Product::where('id', $this->itemId)->first();
             $price = $item->price;
         } else {
             $dataType = 'material';
-            $item = Material::where('id', $this->itemId)->first();
             $price = $this->order
                 ->manufacture
                 ->materials()->where('id', $this->itemId)->first()
@@ -124,9 +125,14 @@ new class extends Component {
         }
     }
 
+    public function finalize(): void
+    {
+
+    }
+
     public function getAvailableItems(): Collection
     {
-        return $this->order->client_id
+        return $this->order->client_id !== 1
             ? Product::whereNotIn('id', $this->order->products()->pluck('id'))->get()
             : $this->order->manufacture
                 ->materials()
@@ -136,12 +142,12 @@ new class extends Component {
 
     public function with(): array
     {
-        if ($this->order->client_id) {
-            $this->orderItems = $this->order->products;
-            $link = '/products/';
-        } else {
+        if ($this->order->client_id === 1) {
             $this->orderItems = $this->order->materials;
             $link = '/materials/';
+        } else {
+            $this->orderItems = $this->order->products;
+            $link = '/products/';
         }
 
         return [
@@ -161,29 +167,12 @@ new class extends Component {
     </x-header>
     <div class="grid lg:grid-cols-2 gap-8">
         <x-card title="Customer" shadow separator>
-            <x-slot:menu>
-                <x-button label="Change" icon="o-pencil"/>
-            </x-slot:menu>
-            @php
-                if ($order->client_id) {
-                    $customer = $order->client;
-                    $orderItems = $order->products;
-                } else {
-                    $customer = (object) [
-                        'id' => 0,
-                        'name' => 'Me',
-                        'email' => '0',
-                        'phone' => '0',
-                        'address' => '0'
-                    ];
-                    $orderItems = $order->materials;
-                }
-            @endphp
-            <x-card title="{{$customer->name}}" class="!p-0">
+
+            <x-card title="{{$order->client->name}}" class="!p-0">
                 <x-slot:subtitle class="text-gray-500 flex flex-col gap-2 mt-2 pl-2">
-                    <x-icon name="o-envelope" label="{{$customer->email}}"/>
-                    <x-icon name="o-phone" label="{{$customer->phone}}"/>
-                    <x-icon name="o-map-pin" label="{{$customer->address}}"/>
+                    <x-icon name="o-envelope" label="{{$order->client->email}}"/>
+                    <x-icon name="o-phone" label="{{$order->client->phone}}"/>
+                    <x-icon name="o-map-pin" label="{{$order->client->address}}"/>
                 </x-slot:subtitle>
             </x-card>
         </x-card>
@@ -242,6 +231,12 @@ new class extends Component {
                 @endif
                 @if($order->status !== Statuses::delivered->name)
                     <x-button label="Next status" wire:click="changeStatus()" class=""/>
+                @else
+                    <x-button
+                        label="Finalize order"
+                        wire:click=""
+                        wire:confirm="Are you sure? \nYou can't undo that action"
+                        class=""/>
                 @endif
             </x-slot:actions>
         </x-card>
@@ -284,7 +279,7 @@ new class extends Component {
     <x-drawer wire:model="showDrawer" title="Add item" right separator with-close-button class="lg:w-1/3">
         <x-form wire:submit="save" class="grid grid-flow-row auto-rows-min gap-3">
             <x-choices-offline
-                label="{{ $order->client_id ? 'Products' : 'Materials' }}"
+                label="{{ $order->client_id === 1 ? 'Materials' : 'Products' }}"
                 wire:model="itemId"
                 :options="$itemsList"
                 icon="o-magnifying-glass"

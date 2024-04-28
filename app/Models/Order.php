@@ -34,6 +34,16 @@ class Order extends Model
         return $this->belongsTo(Manufacture::class);
     }
 
+    public function finalizeProducts()
+    {
+
+    }
+
+    public function finalizeMaterials()
+    {
+
+    }
+
     public function client(): BelongsTo
     {
         return $this->BelongsTo(Client::class);
@@ -54,7 +64,7 @@ class Order extends Model
 
     public function getOrderItems()
     {
-        if ($this->client_id) {
+        if ($this->client_id !== 1) {
             $this->load('products');
             return $this->products;
         } else {

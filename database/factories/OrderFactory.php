@@ -34,12 +34,14 @@ class OrderFactory extends Factory
     static int $statusCount = 4;
     public function definition(): array
     {
+        $status = $this->randomStatus();
         return [
             'due_date' => fake()->dateTimeBetween('-1 month', '+ 6 month'),
             'client_id' => null,
             'manufacture_id' => null,
-            'status' => $this->randomStatus(),
+            'status' => $status,
             'total' => 0,
+            'is_finalized' => $status === 'delivered',
         ];
     }
 

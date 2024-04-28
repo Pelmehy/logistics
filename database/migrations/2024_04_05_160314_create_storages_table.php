@@ -16,6 +16,8 @@ return new class extends Migration
             $table->text('address');
             $table->float('height');
             $table->float('square');
+            $table->integer('load')->nullable()->default(0);
+            $table->integer('capacity')->default(0);
             $table->timestamps();
         });
 
