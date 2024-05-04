@@ -2,6 +2,7 @@
 
 use App\Models\Manufacture;
 use App\Models\Material;
+use App\Models\Product;
 
 use Livewire\Volt\Component;
 use Livewire\WithFileUploads;
@@ -35,6 +36,7 @@ new class extends Component {
     {
         return [
             'materials' => Material::all(),
+            'products' => Product::all(),
         ];
     }
 
@@ -126,7 +128,7 @@ new class extends Component {
 
 <div>
     <x-header title="Create Manufacture" separator/>
-    <div class="grid gap-5 lg:grid-cols-2">
+    <div class="grid gap-8 lg:grid-cols-2">
         <div class="">
             <x-form wire:submit="save">
                 <x-input label="Name" wire:model="name"/>
@@ -172,7 +174,20 @@ new class extends Component {
             </x-form>
         </div>
         <div class="">
-            <img src="" width="300" class="mx-auto"/>
-        </div>
+            @foreach($products as $item)
+                <x-list-item :item="$item" no-hover>
+                    <x-slot:avatar>
+                        <x-avatar :image="$item->url ?: '/empty-product.png'" class="!w-14 !rounded-lg" />
+                    </x-slot:avatar>
+                    <x-slot:value>
+                        {{ $item->name }}
+                    </x-slot:value>
+                    <x-slot:actions>
+                        @foreach($item->materials as $material)
+                            <x-badge :value="$material->name" class="badge-primary" />
+                        @endforeach
+                    </x-slot:actions>
+                </x-list-item>
+            @endforeach        </div>
     </div>
 </div>
