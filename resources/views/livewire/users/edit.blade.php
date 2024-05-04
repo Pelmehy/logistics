@@ -34,8 +34,6 @@ new class extends Component {
     public function mount(): void
     {
         $this->fill($this->user);
-
-        $this->my_languages = $this->user->languages->pluck('id')->all();
     }
 
     public function save(): void
@@ -45,8 +43,6 @@ new class extends Component {
 
         // Update
         $this->user->update($data);
-
-        $this->user->languages()->sync($this->my_languages);
 
         if ($this->photo) {
             $url = $this->photo->store('users', 'public');

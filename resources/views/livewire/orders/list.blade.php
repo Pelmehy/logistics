@@ -20,7 +20,7 @@ new class extends Component {
     public bool $receiverSearch = false;
     public int|null $receiverID = null;
 
-    public array $sortBy = ['column' => 'name', 'direction' => 'asc'];
+    public array $sortBy = ['column' => 'id', 'direction' => 'asc'];
 
     public function headers(): array
     {
@@ -31,7 +31,7 @@ new class extends Component {
             ['key' => 'client_id', 'label' => 'Receiver', 'class' => 'w-1'],
             ['key' => 'total', 'label' => 'Total', 'class' => 'w-1'],
             ['key' => 'status', 'label' => 'Status', 'class' => 'w-1'],
-            ['key' => 'warnings', 'label' => 'Warnings', 'class' => 'w-1'],
+            ['key' => 'warnings', 'label' => 'Warnings', 'class' => 'w-1',  'sortBy' => 'due_date'],
         ];
     }
 
@@ -40,6 +40,7 @@ new class extends Component {
         return Order::query()
             ->when($this->receiverSearch, fn(Builder $q) => $q->where('client_id', $this->receiverID))
             ->when($this->statusType, fn(Builder $q) => $q->where('status', $this->statusType))
+            ->orderBy(...array_values($this->sortBy))
             ->paginate(10);
     }
 
@@ -134,7 +135,18 @@ new class extends Component {
             @endscope
 
             @scope('cell_warnings', $order)
-            <x-badge :value="$order->warnings" class="badge-error"/>
+                @php
+                    $stamp = strtotime($order->due_date);
+                    $now = now();
+                    if (strtotime($order->due_date) < time()) {
+                        $error = 'order is overdue';
+                        $badgeClass = 'badge-error';
+                    } else {
+                        $error = "no warnings";
+                        $badgeClass = 'badge-success';
+                    }
+                @endphp
+                <x-badge :value="$error" class="{{ $badgeClass }}"/>
             @endscope
         </x-table>
     </x-card>

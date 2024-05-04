@@ -14,7 +14,7 @@ new class extends Component {
     use Toast, WithPagination;
 
     public bool $drawer = false;
-    public array $expanded = [1];
+    public array $expanded = [];
 
     public string $search = '';
     public array $sortBy = ['column' => 'address', 'direction' => 'asc'];
@@ -73,11 +73,43 @@ new class extends Component {
             ->paginate(10);
     }
 
+    private function prepareStorageChartData(LengthAwarePaginator $storages): array
+    {
+        /*
+         * {
+         *      name: 'Marine Sprite',
+         *      data: [44, 55, 41, 37, 22, 43, 21]
+         *  }
+         */
+        $data = [
+            'series' => [
+                'Матеріали' => [],
+                'Продукти' => [],
+                'Вільне місце' => [],
+            ],
+            'categories' => [],
+            'capacity' => [],
+
+        ];
+        foreach ($storages as $storage) {
+            $data['categories'][] = 'storage ' . $storage->id;
+            $data['capacity'][] = $storage->capasity;
+
+            $data['series']['Матеріали'][] = $storage->materials()->sum('storage_quantity');
+            $data['series']['Продукти'][] = $storage->products()->sum('storage_quantity');
+            $data['series']['Вільне місце'][] = $storage->capacity - $storage->load;
+        }
+
+        return $data;
+    }
+
     public function with(): array
     {
+        $storages = $this->storage();
         return [
             'headers' => $this->headers(),
-            'storages' => $this->storage(),
+            'storages' => $storages,
+            'storagesData' => $this->prepareStorageChartData($storages),
             'filterCount' => $this->filterCount(),
             'headersItems' => $this->headersItems(),
         ];
@@ -97,34 +129,80 @@ new class extends Component {
         </x-slot:actions>
     </x-header>
 
-    <div class="columns-2 mb-2">
-        <x-card class="p-6" shadow separator>
-            <div id="chart1"></div>
-        </x-card>
-        <x-card class="p-6" shadow separator>
-            <div id="chart2"></div>
+    <div class="my-5">
+        <x-card shadow separator>
+            <x-slot:title>
+                <div class="pl-[1.2rem] text-2xl font-bold ">
+                    Місткість сховищ
+                </div>
+            </x-slot:title>
+            <div class="" id="storageCapacity">
+
+            </div>
         </x-card>
     </div>
 
 
     <script>
         $(document).ready(function () {
-            var options = {
-                chart: {
-                    type: 'pie',
-                    height: 300,
-                },
-                series: [44, 55, 41, 17, 15],
-                chartOptions: {
-                    labels: ['Apple', 'Mango', 'Orange', 'Watermelon']
-                },
+            function storages() {
+                let options = {
+                    series: [
+                            @foreach($storagesData['series'] as $categoryName => $data)
+
+                        {
+                            name: '{{ $categoryName }}',
+                            data: {!! json_encode($data) !!}
+                        },
+                        @endforeach
+                    ],
+                    chart: {
+                        type: 'bar',
+                        height: 250,
+                        stacked: true,
+                    },
+                    plotOptions: {
+                        bar: {
+                            horizontal: true,
+                            dataLabels: {
+                                total: {
+                                    enabled: true,
+                                    offsetX: 0,
+                                    style: {
+                                        fontSize: '13px',
+                                        fontWeight: 900
+                                    }
+                                }
+                            }
+                        },
+                    },
+                    stroke: {
+                        width: 1,
+                        colors: ['#fff']
+                    },
+                    xaxis: {
+                        categories: {!! json_encode($storagesData['categories']) !!},
+                    },
+                    yaxis: {
+                        title: {
+                            text: undefined
+                        },
+                    },
+                    fill: {
+                        opacity: 1
+                    },
+                    legend: {
+                        position: 'bottom',
+                        horizontalAlign: 'center',
+                        offsetX: 40
+                    }
+                };
+
+                let chart = new ApexCharts(document.querySelector("#storageCapacity"), options);
+                chart.render();
             }
 
-            var chart1 = new ApexCharts(document.querySelector("#chart1"), options);
-            var chart2 = new ApexCharts(document.querySelector("#chart2"), options);
-
-            chart1.render();
-            chart2.render();
+            storages();
         })
     </script>
 
@@ -184,15 +262,6 @@ new class extends Component {
                             </div>
                         </div>
                     @endscope
-
-                    @scope('actions', $storage)
-                        <x-button
-                            label="Make order"
-                            link="#TODO_add_link_to_order_page"
-                            class="btn btn-outline btn-success btn-sm"
-                        />
-                    @endscope
-
                 </x-table>
             @endscope
         </x-table>
