@@ -93,9 +93,9 @@
                     <x-menu-item title="create" icon="o-plus" link="/orders/create" />
                 </x-menu-sub>
                 {{-- SETTINGS --}}
-                <x-menu-sub title="Settings" icon="o-cog-6-tooth">
-                    <x-menu-item title="Theme" icon="o-swatch" @click="$dispatch('mary-toggle-theme')" />
-                </x-menu-sub>
+{{--                <x-menu-sub title="Settings" icon="o-cog-6-tooth">--}}
+{{--                    <x-menu-item title="Theme" icon="o-swatch" @click="$dispatch('mary-toggle-theme')" />--}}
+{{--                </x-menu-sub>--}}
             </x-menu>
         </x-slot:sidebar>
 
