@@ -65,24 +65,24 @@ new class extends Component {
     <div class="grid gap-5 lg:grid-cols-2">
         <div class="">
             <x-form wire:submit="save">
-                <x-file label="Image" wire:model="photo" accept="image/png, image/jpeg" crop-after-change>
+                <x-file label="Зображення" wire:model="photo" accept="image/png, image/jpeg" crop-after-change>
                     <img src="/empty-product.png" class="h-40 rounded-lg" />
                 </x-file>
 
-                <x-input label="Name" wire:model="name" />
+                <x-input label="Ім'я" wire:model="name" />
                 <x-textarea
-                    label="Description"
+                    label="Опис"
                     wire:model="description"
-                    placeholder="Add product description here ..."
+                    placeholder="Додайте опис тут ..."
                     hint="Max 1000 chars"
                     rows="5"
                     inline />
 
-                <x-input label="Quantity" wire:model="quantity" type="number" />
+                <x-input label="Кількість" wire:model="quantity" type="number" />
 
                 <x-slot:actions>
-                    <x-button label="Cancel" link="/materials/create" />
-                    <x-button label="Save" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary" />
+                    <x-button label="Відмінити" link="/materials/create" />
+                    <x-button label="Зберегти" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary" />
                 </x-slot:actions>
             </x-form>
         </div>

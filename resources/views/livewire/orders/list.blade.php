@@ -26,12 +26,12 @@ new class extends Component {
     {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
-            ['key' => 'created_at', 'label' => 'Insert Date', 'class' => 'w-1'],
-            ['key' => 'due_date', 'label' => 'Due Date', 'class' => 'w-1'],
-            ['key' => 'client_id', 'label' => 'Receiver', 'class' => 'w-1'],
-            ['key' => 'total', 'label' => 'Total', 'class' => 'w-1'],
-            ['key' => 'status', 'label' => 'Status', 'class' => 'w-1'],
-            ['key' => 'warnings', 'label' => 'Warnings', 'class' => 'w-1',  'sortBy' => 'due_date'],
+            ['key' => 'created_at', 'label' => 'Дата створення', 'class' => 'w-1'],
+            ['key' => 'due_date', 'label' => 'Очікування доставки', 'class' => 'w-1'],
+            ['key' => 'client_id', 'label' => 'Отримувач', 'class' => 'w-1'],
+            ['key' => 'total', 'label' => 'Загалом', 'class' => 'w-1'],
+            ['key' => 'status', 'label' => 'Статус', 'class' => 'w-1'],
+            ['key' => 'warnings', 'label' => 'Попередження', 'class' => 'w-1',  'sortBy' => 'due_date'],
         ];
     }
 
@@ -109,12 +109,12 @@ new class extends Component {
     <!-- HEADER -->
     <x-header title="Orders" separator progress-indicator>
         <x-slot:middle class="!justify-end">
-            <x-input placeholder="Search..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass"/>
+            <x-input placeholder="Пошук..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass"/>
         </x-slot:middle>
         <x-slot:actions>
-            <x-button label="Filters" @click="$wire.drawer = true" responsive icon="o-funnel"
+            <x-button label="Фільтри" @click="$wire.drawer = true" responsive icon="o-funnel"
                       badge="{{ $filterCount ?: null }}"/>
-            <x-button label="Add order" link="/materials/create" responsive icon="o-plus" class="btn-primary"/>
+            <x-button label="Створити" link="/orders/create" responsive icon="o-plus" class="btn-primary"/>
         </x-slot:actions>
     </x-header>
 
@@ -152,9 +152,9 @@ new class extends Component {
     </x-card>
 
     <!-- FILTER DRAWER -->
-    <x-drawer wire:model="drawer" title="Filters" right separator with-close-button class="lg:w-1/3">
+    <x-drawer wire:model="drawer" title="Фільтри" right separator with-close-button class="lg:w-1/3">
         <x-input
-            placeholder="Search..."
+            placeholder="Пошук..."
             wire:model.live.debounce="search"
             icon="o-magnifying-glass"
             @keydown.enter="$wire.drawer = false"/>
@@ -192,8 +192,8 @@ new class extends Component {
             @keydown.enter="$wire.drawer = false"/>
 
         <x-slot:actions>
-            <x-button label="Reset" icon="o-x-mark" wire:click="clear" spinner/>
-            <x-button label="Done" icon="o-check" class="btn-primary" @click="$wire.drawer = false"/>
+            <x-button label="Скинути" icon="o-x-mark" wire:click="clear" spinner/>
+            <x-button label="Застосувати" icon="o-check" class="btn-primary" @click="$wire.drawer = false"/>
         </x-slot:actions>
     </x-drawer>
 </div>

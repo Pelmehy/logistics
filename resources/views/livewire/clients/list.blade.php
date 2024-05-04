@@ -40,10 +40,10 @@ new class extends Component {
     {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
-            ['key' => 'name', 'label' => 'Name', 'class' => 'w-32'],
+            ['key' => 'name', 'label' => 'Ім\'я', 'class' => 'w-32'],
             ['key' => 'email', 'label' => 'E-mail'],
-            ['key' => 'phone', 'label' => 'Phone'],
-            ['key' => 'address', 'label' => 'Address', 'class' => 'hidden lg:table-cell'],
+            ['key' => 'phone', 'label' => 'Телефон'],
+            ['key' => 'address', 'label' => 'Адрес', 'class' => 'hidden lg:table-cell'],
         ];
     }
 
@@ -95,13 +95,13 @@ new class extends Component {
 
 <div>
     <!-- HEADER -->
-    <x-header title="Hello" separator progress-indicator>
+    <x-header title="Клієнти" separator progress-indicator>
         <x-slot:middle class="!justify-end">
-            <x-input placeholder="Search..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass" />
+            <x-input placeholder="Пошук..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass" />
         </x-slot:middle>
         <x-slot:actions>
-            <x-button label="Filters" @click="$wire.drawer = true" responsive icon="o-funnel" badge="{{ $filterCount ?: null }}" />
-            <x-button label="Create" link="/clients/create" responsive icon="o-plus" class="btn-primary" />
+            <x-button label="Фільтри" @click="$wire.drawer = true" responsive icon="o-funnel" badge="{{ $filterCount ?: null }}" />
+            <x-button label="Створити" link="/clients/create" responsive icon="o-plus" class="btn-primary" />
         </x-slot:actions>
     </x-header>
 
@@ -113,18 +113,18 @@ new class extends Component {
             @endscope
 
             @scope('actions', $client)
-            <x-button icon="o-trash" wire:click="delete({{ $client['id'] }})" wire:confirm="Are you sure?" spinner class="btn-ghost btn-sm text-red-500" />
+            <x-button icon="o-trash" wire:click="delete({{ $client['id'] }})" wire:confirm="Ви впевнені?" spinner class="btn-ghost btn-sm text-red-500" />
             @endscope
         </x-table>
     </x-card>
 
     <!-- FILTER DRAWER -->
-    <x-drawer wire:model="drawer" title="Filters" right separator with-close-button class="lg:w-1/3">
-        <x-input placeholder="Search..." wire:model.live.debounce="search" icon="o-magnifying-glass" @keydown.enter="$wire.drawer = false" />
+    <x-drawer wire:model="drawer" title="Фільтри" right separator with-close-button class="lg:w-1/3">
+        <x-input placeholder="Пошук..." wire:model.live.debounce="search" icon="o-magnifying-glass" @keydown.enter="$wire.drawer = false" />
 
         <x-slot:actions>
-            <x-button label="Reset" icon="o-x-mark" wire:click="clear" spinner />
-            <x-button label="Done" icon="o-check" class="btn-primary" @click="$wire.drawer = false" />
+            <x-button label="Скинути" icon="o-x-mark" wire:click="clear" spinner />
+            <x-button label="Застосувати" icon="o-check" class="btn-primary" @click="$wire.drawer = false" />
         </x-slot:actions>
     </x-drawer>
 </div>

@@ -82,40 +82,40 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-header title="Create Product" separator/>
+    <x-header title="Створити продукт" separator/>
     <div class="grid gap-5 lg:grid-cols-2">
         <div class="">
             <x-form wire:submit="save">
-                <x-file label="Image" wire:model="photo" accept="image/png, image/jpeg" crop-after-change>
+                <x-file label="Зображення" wire:model="photo" accept="image/png, image/jpeg" crop-after-change>
                     <img src="/empty-product.png" class="h-40 rounded-lg"/>
                 </x-file>
 
-                <x-input label="Name" wire:model="name"/>
+                <x-input label="Ім'я" wire:model="name"/>
                 <x-textarea
-                    label="Description"
+                    label="Опис"
                     wire:model="description"
-                    placeholder="Add product description here ..."
+                    placeholder="Додайте опис тут ..."
                     hint="Max 1000 chars"
                     rows="5"
                     inline/>
 
                 <x-input
-                    label="Quantity"
+                    label="Кількість"
                     wire:model="quantity"
                     type="number"
                 />
 
                 <x-choices-offline
-                    label="Materials"
+                    label="Матеріали"
                     wire:model="product_materials"
                     :options="$materials"
                     searchable/>
 
                 <x-slot:actions>
-                    <x-button label="Cancel" link="/users"/>
+                    <x-button label="Відмінити" link="/users"/>
                     {{-- The important thing here is `type="submit"` --}}
                     {{-- The spinner property is nice! --}}
-                    <x-button label="Save" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary"/>
+                    <x-button label="Зберегти" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary"/>
                 </x-slot:actions>
             </x-form>
         </div>

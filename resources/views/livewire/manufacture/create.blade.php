@@ -122,24 +122,24 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-header title="Create Manufacture" separator/>
+    <x-header title="Створити Виробника" separator/>
     <div class="grid gap-5 lg:grid-cols-2">
         <div class="">
             <x-form wire:submit="save">
-                <x-input label="Name" wire:model="name"/>
-                <x-input label="Address" wire:model="address" />
+                <x-input label="Ім'я" wire:model="name"/>
+                <x-input label="Адреса" wire:model="address" />
 
                 <x-choices-offline
-                    label="Materials"
+                    label="Матеріали"
                     wire:model.live="manufactureMaterials"
                     :options="$materials"
                     searchable/>
 
                 <x-slot:actions>
-                    <x-button label="Cancel" link="/users"/>
+                    <x-button label="Відмінити" link="/users"/>
                     {{-- The important thing here is `type="submit"` --}}
                     {{-- The spinner property is nice! --}}
-                    <x-button label="Save" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary"/>
+                    <x-button label="Зберегти" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary"/>
                 </x-slot:actions>
 
                 @if($manufactureMaterials)

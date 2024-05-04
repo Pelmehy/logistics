@@ -56,20 +56,20 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-header title="Update Client" separator />
+    <x-header title="Оновити клієнта" separator />
     <div class="grid gap-5 lg:grid-cols-2">
         <div class="">
             <x-form wire:submit="save">
-                <x-input label="Name" wire:model="name" />
+                <x-input label="Ім'я" wire:model="name" />
                 <x-input label="Email" wire:model="email" />
-                <x-input label="Phone" wire:model="phone" />
-                <x-input label="Address" wire:model="address" />
+                <x-input label="Телефон" wire:model="phone" />
+                <x-input label="Адреса" wire:model="address" />
 
                 <x-slot:actions>
-                    <x-button label="Cancel" link="/clients" />
+                    <x-button label="Відмінити" link="/clients" />
                     {{-- The important thing here is `type="submit"` --}}
                     {{-- The spinner property is nice! --}}
-                    <x-button label="Save" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary" />
+                    <x-button label="Зберегти" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary" />
                 </x-slot:actions>
             </x-form>
         </div>

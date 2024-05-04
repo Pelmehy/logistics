@@ -169,12 +169,12 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-header title="Create Product" separator/>
+    <x-header title="Створити Склад" separator/>
     <div class="grid gap-5 lg:grid-cols-2">
         <div class="">
             <x-form wire:submit="save">
                 <x-textarea
-                    label="Address"
+                    label="Адреса"
                     wire:model="address"
                     placeholder="Add storage address here ..."
                     hint="Max 1000 chars"
@@ -194,7 +194,7 @@ new class extends Component {
                 />
 
                 <x-choices-offline
-                    label="Materials"
+                    label="Матеріали"
                     wire:model.live="materialIds"
                     :options="$materials"
                     height="max-h-96"
@@ -233,7 +233,7 @@ new class extends Component {
                     @endscope
                 </x-choices-offline>
 
-                <x-header title="Storage load" size="text-xl" class="!mb-4 mt-8" separator />
+                <x-header title="Завантаження складу" size="text-xl" class="!mb-4 mt-8" separator />
                 <div class="grid grid-flow-col auto-cols-auto">
                     <div class="mr-2 min-w-8">
                         <x-progress value="{{$storage->load}}" max="{{$storage->capacity}}" class="{{ $errors->has('overload') ? 'progress-error' : 'progress-warning'}} h-3" />
@@ -246,7 +246,7 @@ new class extends Component {
 
 
                 @if($selectedMaterials)
-                    <x-header title="Add materials" size="text-xl" class="!mb-4 mt-8" separator />
+                    <x-header title="Додати матеріал" size="text-xl" class="!mb-4 mt-8" separator />
                     @foreach($selectedMaterials as $item)
                         <x-list-item :item="$item" no-hover>
                             <x-slot:avatar>
@@ -257,7 +257,7 @@ new class extends Component {
                             </x-slot:value>
                             <x-slot:actions>
                                 <x-input
-                                    placeholder="count"
+                                    placeholder="кількість"
                                     wire:model="materialsCount.{{$item->id}}"
                                     wire:change="updateLoad({{$item->id}}, $event.target.value, false)"
                                     type="number"
@@ -269,7 +269,7 @@ new class extends Component {
                 @endif
 
                 @if($selectedProducts)
-                    <x-header title="Add products" size="text-xl" class="!mb-4 mt-8" separator />
+                    <x-header title="Додати продкт" size="text-xl" class="!mb-4 mt-8" separator />
                     @foreach($selectedProducts as $item)
                         <x-list-item :item="$item" no-hover>
                             <x-slot:avatar>
@@ -280,7 +280,7 @@ new class extends Component {
                             </x-slot:value>
                             <x-slot:actions>
                                 <x-input
-                                    placeholder="count"
+                                    placeholder="кількість"
                                     wire:model="productsCount.{{$item->id}}"
                                     wire:change="updateLoad({{$item->id}}, $event.target.value, false)"
                                     type="number"
@@ -291,8 +291,8 @@ new class extends Component {
                 @endif
 
                 <x-slot:actions>
-                    <x-button label="Cancel" link="/users"/>
-                    <x-button label="Save" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary"/>
+                    <x-button label="Відмінити" link="/users"/>
+                    <x-button label="Зберегти" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary"/>
                 </x-slot:actions>
             </x-form>
         </div>

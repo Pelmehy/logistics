@@ -169,12 +169,12 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-header title="Create Product" separator/>
+    <x-header title="Створити Замовлення" separator/>
     <div class="grid gap-5 lg:grid-cols-2">
         <div class="">
             <x-form wire:submit="save">
                 <x-datetime
-                    label="Due date"
+                    label="Очікуванна дата доставки"
                     wire:model="dueDate"
                     icon="o-calendar"
                     type="datetime-local"
@@ -182,7 +182,7 @@ new class extends Component {
                 />
 
                 <x-choices
-                    label="Receiver"
+                    label="Отримувач"
                     wire:model.live="receiverId"
                     :options="$clients"
                     single
@@ -190,7 +190,7 @@ new class extends Component {
 
                 @if($receiverId === 1)
                     <x-choices-offline
-                        label="Manufacture"
+                        label="Виробник"
                         wire:model.live="manufactureId"
                         :options="$manufactures"
                         height="max-h-96"
@@ -206,7 +206,7 @@ new class extends Component {
 
                     @if($manufactureId)
                         <x-choices-offline
-                            label="Materials"
+                            label="Матеріали"
                             wire:model.live="itemIds"
                             :options="$materials"
                             height="max-h-96"
@@ -236,7 +236,7 @@ new class extends Component {
 
                 @if($receiverId > 1)
                     <x-choices-offline
-                        label="Products"
+                        label="Продукти"
                         wire:model.live="itemIds"
                         :options="$products"
                         height="max-h-96"
@@ -274,7 +274,7 @@ new class extends Component {
                             </x-slot:value>
                             <x-slot:actions>
                                 <x-input
-                                    placeholder="count"
+                                    placeholder="кількість"
                                     wire:model.live="itemsCount.{{$item->id}}"
 {{--                                    wire:change="updateLoad({{$item->id}}, $event.target.value, false)"--}}
                                     type="number"
@@ -285,10 +285,10 @@ new class extends Component {
                 @endif
 
                 <x-slot:actions>
-                    <x-button label="Cancel" link="/users"/>
+                    <x-button label="Відмінити" link="/users"/>
                     {{-- The important thing here is `type="submit"` --}}
                     {{-- The spinner property is nice! --}}
-                    <x-button label="Save" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary"/>
+                    <x-button label="Зберегти" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary"/>
                 </x-slot:actions>
             </x-form>
         </div>

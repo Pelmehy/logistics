@@ -54,7 +54,7 @@ class extends Component {
         <div class="mb-10">Cool image here</div>
 
         <x-form wire:submit="register">
-            <x-input label="Name" wire:model="name" icon="o-user" inline />
+            <x-input label="Ім'я" wire:model="name" icon="o-user" inline />
             <x-input label="E-mail" wire:model="email" icon="o-envelope" inline />
             <x-input label="Password" wire:model="password" type="password" icon="o-key" inline />
             <x-input label="Confirm Password" wire:model="password_confirmation" type="password" icon="o-key" inline />

@@ -69,22 +69,22 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-header title="Create User" separator />
+    <x-header title="Створити користувача" separator />
     <div class="grid gap-5 lg:grid-cols-2">
         <div class="">
             <x-form wire:submit="save">
-                <x-file label="Avatar" wire:model="photo" accept="image/png, image/jpeg" crop-after-change>
+                <x-file label="Аватар" wire:model="photo" accept="image/png, image/jpeg" crop-after-change>
                     <img src="/empty-user.jpg" class="h-40 rounded-lg" />
                 </x-file>
 
-                <x-input label="Name" wire:model="name" />
+                <x-input label="Ім'я" wire:model="name" />
                 <x-input label="Email" wire:model="email" />
 
                 <x-slot:actions>
-                    <x-button label="Cancel" link="/users" />
+                    <x-button label="Відміна" link="/users" />
                     {{-- The important thing here is `type="submit"` --}}
                     {{-- The spinner property is nice! --}}
-                    <x-button label="Save" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary" />
+                    <x-button label="Зберегти" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary" />
                 </x-slot:actions>
             </x-form>
         </div>

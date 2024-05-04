@@ -44,12 +44,12 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-header title="Create Product" separator/>
+    <x-header title="Створити Склад" separator/>
     <div class="grid gap-5 lg:grid-cols-2">
         <div class="">
             <x-form wire:submit="save">
                 <x-textarea
-                    label="Address"
+                    label="Адреса"
                     wire:model="address"
                     placeholder="Add storage address here ..."
                     hint="Max 1000 chars"
@@ -57,22 +57,22 @@ new class extends Component {
                     inline/>
 
                 <x-input
-                    label="Square"
+                    label="Площа"
                     wire:model="square"
                     type="number"
                 />
 
                 <x-input
-                    label="Height"
+                    label="Висота"
                     wire:model="height"
                     type="number"
                 />
 
                 <x-slot:actions>
-                    <x-button label="Cancel" link="/users"/>
+                    <x-button label="Відмінити" link="/users"/>
                     {{-- The important thing here is `type="submit"` --}}
                     {{-- The spinner property is nice! --}}
-                    <x-button label="Save" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary"/>
+                    <x-button label="Зберегти" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary"/>
                 </x-slot:actions>
             </x-form>
         </div>

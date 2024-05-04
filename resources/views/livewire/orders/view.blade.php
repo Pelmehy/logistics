@@ -30,10 +30,10 @@ new class extends Component {
     {
         return [
             ['key' => 'url', 'label' => '', 'class' => 'w-14'],
-            ['key' => 'name', 'label' => 'Name', 'class' => ''],
-            ['key' => 'count', 'label' => 'Qty', 'class' => ''],
-            ['key' => 'price', 'label' => 'Price', 'class' => ''],
-            ['key' => 'total', 'label' => 'Total', 'class' => ''],
+            ['key' => 'name', 'label' => 'Ім\'я.', 'class' => ''],
+            ['key' => 'count', 'label' => 'Кількість', 'class' => ''],
+            ['key' => 'price', 'label' => 'Ціна', 'class' => ''],
+            ['key' => 'total', 'label' => 'Загалом', 'class' => ''],
 
         ];
     }
@@ -160,13 +160,13 @@ new class extends Component {
 }; ?>
 
 <div>
-    <x-header title="Order #{{$order->id}}" separator progress-indicator>
+    <x-header title="Замовлення #{{$order->id}}" separator progress-indicator>
         <x-slot:actions>
-            <x-button label="Delete" link="/materials/create" responsive icon="o-trash" class="btn-error"/>
+            <x-button label="Видалити" link="/materials/create" responsive icon="o-trash" class="btn-error"/>
         </x-slot:actions>
     </x-header>
     <div class="grid lg:grid-cols-2 gap-8">
-        <x-card title="Customer" shadow separator>
+        <x-card title="Отримувач" shadow separator>
 
             <x-card title="{{$order->client->name}}" class="!p-0">
                 <x-slot:subtitle class="text-gray-500 flex flex-col gap-2 mt-2 pl-2">
@@ -176,19 +176,19 @@ new class extends Component {
                 </x-slot:subtitle>
             </x-card>
         </x-card>
-        <x-card title="Summary" shadow separator>
+        <x-card title="Данні" shadow separator>
             <x-slot:menu>
                 <x-badge value="{{$order->status}}" class="bg-purple-500/20"/>
             </x-slot:menu>
 
             <div class="grid gap-2">
                 <div class="flex gap-3 justify-between items-baseline px-10">
-                    <div>Items</div>
+                    <div>Елементи</div>
                     <div class="border-b border-b-gray-400 border-dashed flex-1"></div>
                     <div class="font-black">({{count($orderItems)}})</div>
                 </div>
                 <div class="flex gap-3 justify-between items-baseline px-10">
-                    <div>Total</div>
+                    <div>Загалом</div>
                     <div class="border-b border-b-gray-400 border-dashed flex-1"></div>
                     <div class="font-black">{{$order->total}} $</div>
                 </div>
@@ -227,25 +227,25 @@ new class extends Component {
 
             <x-slot:actions>
                 @if($order->status !== Statuses::placed->name)
-                    <x-button label="Prev status" wire:click="changeStatus(false)" class=""/>
+                    <x-button label="Попередній статус" wire:click="changeStatus(false)" class=""/>
                 @endif
                 @if($order->status !== Statuses::delivered->name)
-                    <x-button label="Next status" wire:click="changeStatus()" class=""/>
+                    <x-button label="Наступний статус" wire:click="changeStatus()" class=""/>
                 @else
                     <x-button
-                        label="Finalize order"
+                        label="Закрити замовлення"
                         wire:click=""
-                        wire:confirm="Are you sure? \nYou can't undo that action"
+                        wire:confirm="Ви впевнені? \nYou can't undo that action"
                         class=""/>
                 @endif
             </x-slot:actions>
         </x-card>
     </div>
 
-    <x-card title="Items" class="mt-5" shadow separator>
-        <x-slot:menu>
-            <x-button label="Add" icon="o-plus" wire:click="$toggle('showDrawer')"/>
-        </x-slot:menu>
+    <x-card title="Елементи" class="mt-5" shadow separator>
+{{--        <x-slot:menu>--}}
+{{--            <x-button label="Add" icon="o-plus" wire:click="$toggle('showDrawer')"/>--}}
+{{--        </x-slot:menu>--}}
 
         <x-table
             :headers="$headers"
@@ -269,10 +269,10 @@ new class extends Component {
             {{ $orderItem->orderItems->total }} $
             @endscope
 
-            @scope('actions', $orderItem)
-            <x-button icon="o-trash" wire:click="delete({{ $orderItem->id }})" wire:confirm="Are you sure?" spinner
-                      class="btn-ghost btn-sm text-red-500"/>
-            @endscope
+{{--            @scope('actions', $orderItem)--}}
+{{--            <x-button icon="o-trash" wire:click="delete({{ $orderItem->id }})" wire:confirm="Ви впевнені?" spinner--}}
+{{--                      class="btn-ghost btn-sm text-red-500"/>--}}
+{{--            @endscope--}}
         </x-table>
     </x-card>
 
@@ -303,10 +303,10 @@ new class extends Component {
                 @endscope
             </x-choices-offline>
 
-            <x-input label="Quantity" placeholder="0" wire:model="quantity" />
+            <x-input label="Кількість" placeholder="0" wire:model="quantity" />
 
             <x-slot:actions>
-                <x-button label="Cancel" class="btn-outline btn-error" />
+                <x-button label="Відмінити" class="btn-outline btn-error" />
                 <x-button label="Add" class="btn-outline btn-success" type="submit" spinner="save" />
             </x-slot:actions>
         </x-form>

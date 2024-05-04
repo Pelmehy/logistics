@@ -84,12 +84,12 @@ new class extends Component {
     {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
-            ['key' => 'created_at', 'label' => 'Insert Date', 'class' => 'w-1'],
-            ['key' => 'due_date', 'label' => 'Due Date', 'class' => 'w-1'],
-            ['key' => 'client_id', 'label' => 'Receiver', 'class' => 'w-1'],
-            ['key' => 'total', 'label' => 'Total', 'class' => 'w-1'],
-            ['key' => 'status', 'label' => 'Status', 'class' => 'w-1'],
-            ['key' => 'warnings', 'label' => 'Warnings', 'class' => 'w-1',  'sortBy' => 'due_date'],
+            ['key' => 'created_at', 'label' => 'Дата створення', 'class' => 'w-1'],
+            ['key' => 'due_date', 'label' => 'Очікування доставки', 'class' => 'w-1'],
+            ['key' => 'client_id', 'label' => 'Отримувач', 'class' => 'w-1'],
+            ['key' => 'total', 'label' => 'Загалом', 'class' => 'w-1'],
+            ['key' => 'status', 'label' => 'Статус', 'class' => 'w-1'],
+            ['key' => 'warnings', 'label' => 'Попередження', 'class' => 'w-1',  'sortBy' => 'due_date'],
         ];
     }
 

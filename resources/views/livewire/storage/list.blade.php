@@ -24,20 +24,20 @@ new class extends Component {
     {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
-            ['key' => 'address', 'label' => 'Address', 'class' => 'w-32'],
-            ['key' => 'height', 'label' => 'Height', 'class' => 'w-4'],
-            ['key' => 'square', 'label' => 'Square', 'class' => 'w-4'],
-            ['key' => 'capacity', 'label' => 'Capacity', 'class' => 'w-32', 'sortable' => false],
+            ['key' => 'address', 'label' => 'Адреса', 'class' => 'w-32'],
+            ['key' => 'height', 'label' => 'Висота', 'class' => 'w-4'],
+            ['key' => 'square', 'label' => 'Площа', 'class' => 'w-4'],
+            ['key' => 'capacity', 'label' => 'Місткість', 'class' => 'w-32', 'sortable' => false],
         ];
     }
 
     public function headersItems(): array
     {
         return [
-            ['key' => 'url', 'label' => 'img', 'class' => 'w-1'],
-            ['key' => 'name', 'label' => 'Name', 'class' => 'w-16'],
-            ['key' => 'type', 'label' => 'Type', 'class' => 'w-16'],
-            ['key' => 'capacity', 'label' => 'Quantity', 'class' => 'w-8'],
+            ['key' => 'url', 'label' => 'Зображ.', 'class' => 'w-1'],
+            ['key' => 'name', 'label' => 'Ім\'я.', 'class' => 'w-16'],
+            ['key' => 'type', 'label' => 'Тип', 'class' => 'w-16'],
+            ['key' => 'capacity', 'label' => 'Кількість', 'class' => 'w-8'],
         ];
     }
 
@@ -121,12 +121,12 @@ new class extends Component {
     <!-- HEADER -->
     <x-header title="Hello" separator progress-indicator>
         <x-slot:middle class="!justify-end">
-            <x-input placeholder="Search..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass"/>
+            <x-input placeholder="Пошук..." wire:model.live.debounce="search" clearable icon="o-magnifying-glass"/>
         </x-slot:middle>
         <x-slot:actions>
-            <x-button label="Filters" @click="$wire.drawer = true" responsive icon="o-funnel"
+            <x-button label="Фільтри" @click="$wire.drawer = true" responsive icon="o-funnel"
                       badge="{{ $filterCount ?: null }}"/>
-            <x-button label="Create" link="/storage/create" responsive icon="o-plus" class="btn-primary"/>
+            <x-button label="Створити" link="/storage/create" responsive icon="o-plus" class="btn-primary"/>
         </x-slot:actions>
     </x-header>
 
@@ -237,7 +237,7 @@ new class extends Component {
             <x-button
                 icon="o-trash"
                 wire:click="delete({{$storage['id']}})"
-                wire:confirm="Are you sure?"
+                wire:confirm="Ви впевнені?"
                 spinner
                 class="btn-ghost btn-sm text-red-500"/>
             @endscope
@@ -270,13 +270,13 @@ new class extends Component {
     </x-card>
 
     <!-- FILTER DRAWER -->
-    <x-drawer wire:model="drawer" title="Filters" right separator with-close-button class="lg:w-1/3">
-        <x-input placeholder="Search..." wire:model.live.debounce="search" icon="o-magnifying-glass"
+    <x-drawer wire:model="drawer" title="Фільтри" right separator with-close-button class="lg:w-1/3">
+        <x-input placeholder="Пошук..." wire:model.live.debounce="search" icon="o-magnifying-glass"
                  @keydown.enter="$wire.drawer = false"/>
 
         <x-slot:actions>
-            <x-button label="Reset" icon="o-x-mark" wire:click="clear" spinner/>
-            <x-button label="Done" icon="o-check" class="btn-primary" @click="$wire.drawer = false"/>
+            <x-button label="Скинути" icon="o-x-mark" wire:click="clear" spinner/>
+            <x-button label="Застосувати" icon="o-check" class="btn-primary" @click="$wire.drawer = false"/>
         </x-slot:actions>
     </x-drawer>
 </div>
