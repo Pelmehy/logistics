@@ -56,6 +56,7 @@ new class extends Component {
     {
         return Material::query()
             ->when($this->search, fn(Builder $q) => $q->where('name', 'like', "%$this->search%"))
+            ->orderBy(...array_values($this->sortBy))
             ->paginate(10);
     }
 

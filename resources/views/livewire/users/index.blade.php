@@ -39,7 +39,7 @@ new class extends Component {
         return [
             ['key' => 'id', 'label' => '#', 'class' => 'w-1'],
             ['key' => 'name', 'label' => 'Name', 'class' => 'w-64'],
-            ['key' => 'email', 'label' => 'E-mail', 'sortable' => false],
+            ['key' => 'email', 'label' => 'E-mail'],
         ];
     }
 

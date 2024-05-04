@@ -70,6 +70,7 @@ new class extends Component {
     {
         return Storage::query()
             ->when($this->search, fn( $q) => $q->where('address', 'like', "%$this->search%"))
+            ->orderBy(...array_values($this->sortBy))
             ->paginate(10);
     }
 
