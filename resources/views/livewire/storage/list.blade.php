@@ -221,13 +221,14 @@ new class extends Component {
                 @php
                     $capacity = $storage->height * $storage->square;
                     $load = $storage->items->sum('storage_quantity');
+                    $load = (int) ($load * 100 / $capacity);
                 @endphp
                 <div class="grid grid-flow-col auto-cols-auto">
                     <div class="mr-2 min-w-8">
-                        <x-progress value="{{$load}}" max="{{$capacity}}" class="progress-warning h-3" />
+                        <x-progress value="{{$load}}" max="100" class="progress-warning h-3" />
                     </div>
                     <div class="min-w-8">
-                        {{$load}} / {{$capacity}}
+                        {{$load}} / 100
                     </div>
                 </div>
             @endscope

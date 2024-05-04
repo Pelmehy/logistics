@@ -173,12 +173,17 @@ new class extends Component {
     <div class="grid gap-5 lg:grid-cols-2">
         <div class="">
             <x-form wire:submit="save">
-                <x-datetime label="Due date" wire:model="dueDate" icon="o-calendar" type="datetime-local"/>
+                <x-datetime
+                    label="Due date"
+                    wire:model="dueDate"
+                    icon="o-calendar"
+                    type="datetime-local"
+                    min="{{ date('Y-m-d', (time() + 24 * 3600)) . 'T00:00' }}"
+                />
 
                 <x-choices
                     label="Receiver"
                     wire:model.live="receiverId"
-                    wire:change="resetItems()"
                     :options="$clients"
                     single
                 />
