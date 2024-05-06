@@ -1,3 +1,7 @@
+@php
+use App\Enums\Roles;
+$adminRole = Roles::admin->name;
+@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -60,7 +64,9 @@
                 {{-- USERS --}}
                 <x-menu-sub title="Users" icon="o-briefcase">
                     <x-menu-item title="list" icon="o-list-bullet" link="/users" />
-                    <x-menu-item title="create" icon="o-plus" link="/users/create" />
+                    @if($user->role === $adminRole)
+                        <x-menu-item title="create" icon="o-plus" link="/users/create" />
+                    @endif
                 </x-menu-sub>
                 {{-- Clients --}}
                 <x-menu-sub title="Clients" icon="o-users">

@@ -4,6 +4,7 @@ use Livewire\Volt\Component;
 use Livewire\WithFileUploads;
 use Mary\Traits\Toast;
 use Livewire\Attributes\Rule;
+use App\Enums\Roles;
 
 use App\Models\User;
 
@@ -17,16 +18,25 @@ new class extends Component {
     #[Rule('required|email')]
     public string $email = '';
 
-    #[Rule('required')]
-    public array $my_languages = [];
-
     #[Rule('nullable|image|max:1024')]
     public $photo;
+
+    #[Rule('required')]
+    public string $role;
 
     // We also need this to fill Countries combobox on upcoming form
     public function with(): array
     {
+        $userRoles =[];
+        foreach (Roles::cases() as $role) {
+            $userRoles[] = [
+                'id' => $role->name,
+                'name' => $role->value,
+            ];
+        }
+
         return [
+            'userRoles' => $userRoles,
         ];
     }
 
@@ -37,12 +47,13 @@ new class extends Component {
 
         // Update
         if ($this->_isUserExists($data['email'])) {
-            $this->error('User already exists.', redirectTo: '/users/create');
+            $this->error('User already exists.');
             return;
         }
 
         $user = new User();
         $user->name = $data['name'];
+        $user->role = $data['role'];
         $user->email = $data['email'];
         $user->password = 'pls add me later';
         $user->save();
@@ -86,6 +97,15 @@ new class extends Component {
                     {{-- The spinner property is nice! --}}
                     <x-button label="Зберегти" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary" />
                 </x-slot:actions>
+
+                <x-choices
+                    label="Роль користувача"
+                    wire:model="role"
+                    :options="$userRoles"
+                    icon="o-users"
+                    single
+                >
+                </x-choices>
             </x-form>
         </div>
         <div class="">

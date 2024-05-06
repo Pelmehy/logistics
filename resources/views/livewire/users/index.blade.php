@@ -8,6 +8,7 @@ use Mary\Traits\Toast;
 use Livewire\WithPagination;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use App\Enums\Roles;
 
 new class extends Component {
     use Toast;
@@ -70,6 +71,8 @@ new class extends Component {
             'users' => $this->users(),
             'headers' => $this->headers(),
             'filterCount' => $this->filterCount(),
+            'adminRole' => Roles::admin->name,
+            'user' => auth()->user(),
         ];
     }
 
@@ -92,13 +95,25 @@ new class extends Component {
         </x-slot:middle>
         <x-slot:actions>
             <x-button label="Фільтри" @click="$wire.drawer = true" responsive icon="o-funnel" badge="{{ $filterCount ?: null }}" />
+            @if($user->role === $adminRole)
             <x-button label="Створити" link="/users/create" responsive icon="o-plus" class="btn-primary" />
+            @endif
         </x-slot:actions>
     </x-header>
 
-    <!-- TABLE  -->
+    @php
+    $link = $user->role === $adminRole
+        ? "users/{id}/edit"
+        : "";
+    @endphp
     <x-card>
-        <x-table :headers="$headers" :rows="$users" :sort-by="$sortBy" with-pagination link="users/{id}/edit">
+        <x-table
+            :headers="$headers"
+            :rows="$users"
+            :sort-by="$sortBy"
+            with-pagination
+            link="{{$link}}"
+        >
             @scope('actions', $user)
             <x-button icon="o-trash" wire:click="delete({{ $user['id'] }})" wire:confirm="Ви впевнені?" spinner class="btn-ghost btn-sm text-red-500" />
             @endscope

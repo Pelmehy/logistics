@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call(MaterialSeeder::class);
         $this->call(ProductSeeder::class);
         $this->call(StorageSeeder::class);
+
+        $this->call(AdminSeeder::class);
         User::factory(50)->create();
 
         Manufacture::factory(5)->create();
@@ -57,7 +59,7 @@ class DatabaseSeeder extends Seeder
             foreach ($elements as $el) {
                 $data[] = [
                     $elementTiedName . '_id' => $el,
-                    'price' => round(fake()->randomFloat(max: 10000), 2),
+                    'price' => round(fake()->randomFloat(max: 1000), 2),
                 ];
             }
 

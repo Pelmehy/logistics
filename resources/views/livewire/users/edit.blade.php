@@ -4,6 +4,7 @@ use Livewire\Volt\Component;
 use Livewire\WithFileUploads;
 use Mary\Traits\Toast;
 use Livewire\Attributes\Rule;
+use App\Enums\Roles;
 
 use App\Models\User;
 use App\Models\Language;
@@ -24,15 +25,29 @@ new class extends Component {
     #[Rule('nullable|image|max:1024')]
     public $photo;
 
+    #[Rule('required')]
+    public string $role;
+
+    public array $userRoles = [];
+
     // We also need this to fill Countries combobox on upcoming form
     public function with(): array
     {
+        foreach (Roles::cases() as $role) {
+            $this->userRoles[] = [
+                'id' => $role->name,
+                'name' => $role->value,
+            ];
+        }
+
         return [
+            'userRoles' => $this->userRoles,
         ];
     }
 
     public function mount(): void
     {
+
         $this->fill($this->user);
     }
 
@@ -72,6 +87,15 @@ new class extends Component {
                     {{-- The spinner property is nice! --}}
                     <x-button label="Зберегти" icon="o-paper-airplane" spinner="save" type="submit" class="btn-primary" />
                 </x-slot:actions>
+
+                <x-choices
+                    label="Роль користувача"
+                    wire:model="role"
+                    :options="$userRoles"
+                    icon="o-users"
+                    single
+                >
+                </x-choices>
             </x-form>
         </div>
         <div class="">
