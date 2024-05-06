@@ -39,15 +39,15 @@ class extends Component {
 } ?>
 
 <div class="md:w-96 mx-auto my-auto mt-20">
-    <div class="mb-10">Cool image here</div>
+    <div class="mb-10"></div>
 
     <x-form wire:submit="login">
         <x-input label="E-mail" wire:model="email" icon="o-envelope" inline />
-        <x-input label="Password" wire:model="password" type="password" icon="o-key" inline />
+        <x-input label="Пароль" wire:model="password" type="password" icon="o-key" inline />
 
         <x-slot:actions>
-            <x-button label="Create an account" class="btn-ghost" link="/register" />
-            <x-button label="Login" type="submit" icon="o-paper-airplane" class="btn-primary" spinner="login" />
+            <x-button label="Створити акаунт" class="btn-ghost" link="/register" />
+            <x-button label="Підтвердити" type="submit" icon="o-paper-airplane" class="btn-primary" spinner="login" />
         </x-slot:actions>
     </x-form>
 </div>

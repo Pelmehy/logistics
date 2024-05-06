@@ -114,6 +114,24 @@ new class extends Component {
             with-pagination
             link="{{$link}}"
         >
+            @scope('cell_name', $user)
+                @php
+                $badgeType = 'badge-primary';
+
+                switch ($user->role) {
+                    case Roles::admin->name:
+                        $badgeType = 'badge-accent badge-outline';
+                        break;
+                    case Roles::user->name:
+                       $badgeType = 'badge-primary badge-outline';
+                }
+                @endphp
+                <span class="mr-1">
+                    {{$user->name}}
+                </span>
+                <x-badge value="{{ $user->role }}" class="{{ $badgeType }}" />
+            @endscope
+
             @scope('actions', $user)
             <x-button icon="o-trash" wire:click="delete({{ $user['id'] }})" wire:confirm="Ви впевнені?" spinner class="btn-ghost btn-sm text-red-500" />
             @endscope
