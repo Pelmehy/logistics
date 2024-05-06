@@ -73,7 +73,50 @@ class Order extends Model
 
     public function finalizeProducts()
     {
+        $products = $this->products;
+        $itemsLocation = [];
+        foreach ($products as $product) {
+//            $storage = Storage::query()->products()->where("product_id", $product->id)->get();
+            $storages = Storage::whereHas('products', function ($query) use ($product) {
+                return $query
+                    ->where('id', $product->id);
+            })->get();
 
+            $requested = $product->orderItems->count;
+            foreach ($storages as $storage) {
+                $storageProduct = $storage->products()->where('id', $product->id)->first();
+                $itemsLocation[] = [
+                    'storage_id' => $storage->id,
+                    'product_id' => $product->id,
+                    'count' => $storageProduct->pivot->storage_quantity,
+                    'requested' => $requested,
+                ];
+
+                if ($requested <= $storageProduct->pivot->storage_quantity) {
+                    $requested = 0;
+                    break;
+                } else {
+                    $requested -= $storage->quantity;
+                }
+            }
+
+            if ($requested > 0) {
+                return 'Недостатньо продуктів на скаладі. Не можу закрити замовлення';
+            }
+        }
+
+        foreach ($itemsLocation as $item) {
+            if ($item['requested'] < $item['count']) {
+                $count = $item['count'] - $item['requested'];
+                Storage::where('id', $item['storage_id'])->first()
+                    ->products()->updateExistingPivot($item['product_id'], ['storage_quantity' => $count]);
+            }
+        }
+
+        $this->is_finalized = 1;
+        $this->save();
+
+        return '';
     }
 
     public function finalizeMaterials()

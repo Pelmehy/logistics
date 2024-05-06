@@ -75,7 +75,7 @@ class DatabaseSeeder extends Seeder
         $total = 0;
 
         if ($randSelect === 1) {
-            $clientId = null;
+            $clientId = 1;
             $manufacture = Manufacture::inRandomOrder()->first();
             $manufactureId = $manufacture->id;
 
@@ -95,7 +95,7 @@ class DatabaseSeeder extends Seeder
                 $total += $orderTotal;
             }
         } else {
-            $clientId = Client::inRandomOrder()->first()->id;
+            $clientId = Client::where('id', '>', 1 )->inRandomOrder()->first()->id;
             $manufactureId = null;
 
             $syncType = 'products';

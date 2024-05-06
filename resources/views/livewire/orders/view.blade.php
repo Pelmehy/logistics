@@ -127,11 +127,18 @@ new class extends Component {
 
     public function finalize(): void
     {
+        $status = $this->order->client_id === 1
+        ? $this->order->finalizeMaterials()
+        : $this->order->finalizeProducts();
 
+        if ($status) {
+            $this->error($status);
+        }
     }
 
     public function getAvailableItems(): Collection
     {
+//        dd($this->order->manufacture);
         return $this->order->client_id !== 1
             ? Product::whereNotIn('id', $this->order->products()->pluck('id'))->get()
             : $this->order->manufacture
@@ -226,18 +233,25 @@ new class extends Component {
             </div>
 
             <x-slot:actions>
-                @if($order->status !== Statuses::placed->name)
-                    <x-button label="Попередній статус" wire:click="changeStatus(false)" class=""/>
-                @endif
-                @if($order->status !== Statuses::delivered->name)
-                    <x-button label="Наступний статус" wire:click="changeStatus()" class=""/>
+                @if($order->is_finalized)
+                    <x-alert icon="o-exclamation-triangle" class="alert-success">
+                        Замовлення закрите
+                    </x-alert>
                 @else
-                    <x-button
-                        label="Закрити замовлення"
-                        wire:click=""
-                        wire:confirm="Ви впевнені? \nYou can't undo that action"
-                        class=""/>
+                    @if($order->status !== Statuses::placed->name)
+                        <x-button label="Попередній статус" wire:click="changeStatus(false)" class=""/>
+                    @endif
+                    @if($order->status !== Statuses::delivered->name)
+                        <x-button label="Наступний статус" wire:click="changeStatus()" class=""/>
+                    @else
+                        <x-button
+                            label="Закрити замовлення"
+                            wire:click="finalize()"
+                            wire:confirm="Ви впевнені? \nYou can't undo that action"
+                            class=""/>
+                    @endif
                 @endif
+
             </x-slot:actions>
         </x-card>
     </div>
@@ -256,9 +270,10 @@ new class extends Component {
             @endscope
 
             @scope('cell_count', $orderItem)
-            <x-input class="!max-w-24" type="number"
-                     wire:change="updateQuantity({{$orderItem->id}}, $event.target.value)"
-                     value="{{$orderItem->orderItems->count}}" placeholder="item count"/>
+                {{$orderItem->orderItems->count}}
+{{--                <x-input class="!max-w-24" type="number"--}}
+{{--                         wire:change="updateQuantity({{$orderItem->id}}, $event.target.value)"--}}
+{{--                         value="{{$orderItem->orderItems->count}}" placeholder="item count"/>--}}
             @endscope
 
             @scope('cell_price', $orderItem)
